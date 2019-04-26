@@ -9,6 +9,7 @@ $result_restaurant = $conn->query($sql_restaurant);
 $sql_get_menu = "SELECT * FROM restaurant_menu WHERE restaurant_id = '".$_GET['id']."'";
 $result_get_menu_id = $conn->query($sql_get_menu);
 
+$_SESSION['universal_menu_id'] = $_GET['id'];
 
 $menu_id = "";
 if($result_get_menu_id->num_rows > 0)
@@ -18,8 +19,9 @@ if($result_get_menu_id->num_rows > 0)
   }
 }
 
+$category = array();
 // echo $menu_id;
-$sql_category = "SELECT category.name from category where id in 
+$sql_category = "SELECT category.id, category.name from category where id in 
                   (SELECT category_id from items WHERE id in 
                     (SELECT item_id FROM menu_items WHERE menu_id = '".$menu_id."'))";
 $result_sql_category = $conn->query($sql_category);
@@ -27,8 +29,11 @@ if($result_sql_category->num_rows > 0){
   while($row = $result_sql_category->fetch_assoc()){
     echo $row['name'];
     echo "<br>";
+    array_push($category,$row['name']);  
   }
 }
+
+print_r($category);
 
 
 $sql_menu_new = "SELECT * FROM items WHERE id IN (SELECT item_id FROM `menu_items` WHERE menu_id = '".$menu_id."')  order BY category_id";
@@ -126,8 +131,7 @@ if ($result_menu_new->num_rows > 0)
         <td><?php echo $row["name"] ?></td>
         <td><?php echo "$". $row["price"] ?></td>
         <?php
-         echo "<td><a href = 'edit_menu.php?id=".$row["id"]."&food=".$row["food"]."&price=".$row["price"]."&category_id=".$row['category_id']."'>Edit</a></td>"; 
-        
+         echo "<td><a href = 'edit_menu.php?id=".$row["id"]."'>Edit</a></td>"; 
         echo "<td><a href = 'delete_menu_item.php?id=".$row["id"]."&food=".$row["food"]."&price=".$row["price"]."&category_id=".$row['category_id']."'>Delete</a></td>";
       ?>
       </tr>

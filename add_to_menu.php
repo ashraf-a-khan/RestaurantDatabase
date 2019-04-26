@@ -1,7 +1,79 @@
 <?php
 include 'db.php';
 
-$food_err = ""; 
+
+// let's pretend that a user wants to create a new "group". we will do so
+// while at the same time creating a "membership" for the group which
+// consists solely of the user themselves (at first). accordingly, the group
+// and membership records should be created together, or not at all.
+// this sounds like a job for: TRANSACTIONS! (*cue music*)
+
+// note: this is meant for InnoDB tables. won't work with MyISAM tables.
+
+$id = $_GET['id'];  
+// $new_item_id = "";
+// mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_ONLY);
+
+// try {
+
+//     //$conn->autocommit(FALSE); // i.e., start transaction
+// 	mysqli_autocommit($conn, FALSE);
+
+//     // assume that the TABLE groups has an auto_increment id field
+//     $query = "INSERT INTO `items` (`category_id`, `name`, `price`) VALUES ('".$_POST['category_id']."', '".$_POST['name']."', '".$_POST['price']."')";
+
+//     $result = $conn->query($query);
+//     if ( !$result ) {
+//         $result->free();
+//         throw new Exception($conn->error);
+//     }
+
+// 	printf ("New Record has id %d.\n", mysqli_insert_id($conn));
+//     $new_item_id = mysqli_insert_id($conn); // last auto_inc id from *this* connection
+//     $query = "INSERT INTO menu_items (menu_id,item_id) ";
+//     $query .= "VALUES ('".$id."', '".$new_item_id."')";
+//     $result = $conn->query($query);
+//     if ( !$result ) {
+//         $result->free();
+//         throw new Exception($conn->error);
+//     }
+//     // our SQL queries have been successful. commit them
+//     // and go back to non-transaction mode.
+//     $conn->commit();
+//     $conn->autocommit(TRUE); // i.e., end transaction
+// }
+// catch ( Exception $e ) {
+
+//     // before rolling back the transaction, you'd want
+//     // to make sure that the exception was db-related
+//     $conn->rollback(); 
+//     $conn->autocommit(TRUE); // i.e., end transaction   
+// }
+
+//$salary = 5000;
+// $salary = '$5000';
+
+/* Change database details according to your database */
+// $conn = mysqli_connect('localhost', 'robin', 'robin123', 'company_db');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$name_err = ""; 
 $price_err = ""; 
 function sanitize_input($data)
 {
@@ -11,44 +83,96 @@ function sanitize_input($data)
     return $data;
 }
 
-$id = $_GET['id'];
+//$sql_get_next_item_id = "SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'items' AND table_schema = 'restaurant_2'"
+
+
+echo $max_item_id;
+
 
 if(isset($_POST['update']))
 {	
 
-	$food = "";
+	$name = "";
 	$price = "";  	
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{	$category_id = sanitize_input($_POST['category_id']);
-		$food = sanitize_input($_POST['food']);
+		$name = sanitize_input($_POST['name']);
 		$price = sanitize_input($_POST['price']);
 
-		if(empty($food))
+		if(empty($name))
 		{
-			$food_err = "The food field cannot be empty";
+			$name_err = "The name field cannot be empty";
 		}
 		else if(empty($price))
 		{
 			$price_err = "The price field cannot be empty";
 		}else{
-			$sql = "INSERT into menu (id, 
-			food,
-			price,
-			category_id
-			)	
-			VALUES ('".$id."',
-			'".$food."',
-			'".$price."',
-			'".$category_id."') ";
+			// $sql = "INSERT INTO items ( 
+			// category_id,
+			// name,
+			// price
+			// )	
+			// VALUES ('".$category_id."',
+			// '".$name."',
+			// '".$price."') ";
 
-			if ($conn->query($sql) === TRUE)
-            {
+			// if ($conn->query($sql) === TRUE)
+   //          {
+			// 	header('Location: view_menu.php?id='.$id.'');
+   //          }
+   //          else
+   //          {
+   //             echo "Something went wrong!";
+   //          }
+			mysqli_autocommit($conn, true);
+			$flag = true;
+			$sql_insert_into_items = "INSERT INTO `items` (`category_id`, `name`, `price`) VALUES ('".$_POST['category_id']."', '".$_POST['name']."', '".$_POST['price']."')";
+			$max_item_id="";
+
+
+
+			$result = mysqli_query($conn, $sql_insert_into_items);  //INSERTING INTO THE ITEMS TABLE
+
+			if (!$result) {
+				$flag = false;
+
+			    echo "Error details: " . mysqli_error($conn) . ".";
+			}
+		
+			$sql_get_max_item_id = "SELECT MAX(id) FROM items"; //RETRIEVING LATEST INSERTED ITEM ID FOR MENU_ITEMS TABLE
+			$result_get_max_item_id = $conn->query($sql_get_max_item_id);
+			if($result_get_max_item_id->num_rows > 0){
+				while($row = $result_get_max_item_id->fetch_assoc()){
+					$max_item_id = $row['MAX(id)'];		
+				}
+			}
+			else
+			{
+				echo "no max id";
+			}
+
+			echo $max_item_id;
+
+			echo "<br>";
+			echo $id;
+			$sql_insert_into_menu_items = "INSERT INTO menu_items (menu_id, item_id)  VALUES ('".$id."', '".$max_item_id."')";
+
+
+			$result = mysqli_query($conn, $sql_insert_into_menu_items);   //INSERTING ITEM_ID AND MENU_ID IN MENU_ITEMS table
+			if (!$result) {
+				$flag = false;
+			    echo "Error details: " . mysqli_error($conn) . ".";
+			}
+			if ($flag) {
+			    mysqli_commit($conn);
 				header('Location: view_menu.php?id='.$id.'');
-            }
-            else
-            {
-               echo "Something went wrong!";
-            }
+			    echo "All queries were executed successfully";
+			} else {
+				mysqli_rollback($conn);
+			    echo "All queries were rolled back";
+			} 
+
+			// mysqli_close($conn);
 		}
 	}
 }
@@ -99,13 +223,13 @@ if(isset($_POST['update']))
                 <div id="login-column" class="col-md-6">
                     <div id="login-box" class="col-md-12">
                         <!-- <form id="login-form" class="form" action="DisplayRestaurantsAdmin.php" method="post"> -->
-                            <h3 class="text-center text-info">Add Food to Menu</h3>
+                            <h3 class="text-center text-info">Add name to Menu</h3>
                         	<form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
 
                             <div class="form-group">
-                                <label for="username" class="text-info">Food:</label><br>
-                                <input type="text"  name="food" value = "" class="form-control">
-                                <span class = "error"> &nbsp*<?php if (empty($update_food)) {echo "<p><em><font color=red>" . $food_err . "</font></em></p>";}?>
+                                <label for="username" class="text-info">name:</label><br>
+                                <input type="text"  name="name" value = "" class="form-control">
+                                <span class = "error"> &nbsp*<?php if (empty($update_food)) {echo "<p><em><font color=red>" . $name_err . "</font></em></p>";}?>
 		    					</span>
                             </div>
                             <div class="form-group">
@@ -119,25 +243,25 @@ if(isset($_POST['update']))
                                 <!-- <input type="text" name="x" id="username" class="form-control"> -->
 		                    	<td>
 							    <select style="text-align: center" name="category_id">
-							    	<option value="All-day">All-day</option>
-							        <option value="Appetizers">Appetizers</option>
-							        <option value="Breakfast">Breakfast</option>
-							        <option value="Burgers">Burgers</option>
-							        <option value="Combos" >Combos</option>
-							    	<option value="Cuisine">Cuisine</option>
-							        <option value="Desserts">Desserts</option>
-							        <option value="Dinner">Dinner</option>
-							        <option value="Drinks">Drinks</option>
-							        <option value="Entrees" >Entrees</option>
-							        <option value="Kid's specials">Kid's specials</option>
-							        <option value="Lunch">Lunch</option>
-							        <option value="Salads">Salads</option>
-							        <option value="Sauces">Sauces</option>
-							        <option value="Side Dishes" >Side Dishes</option>
-							        <option value="Smoothies">Smoothies</option>
-							        <option value="Soups">Soups</option>
-							        <option value="Vegan">Vegan</option>
-							        <option value="Vegetarian">Vegetarian</option>	        
+							    	<option value="1">All-day</option>
+							        <option value="2">Appetizers</option>
+							        <option value="3">Breakfast</option>
+							        <option value="4">Burgers</option>
+							        <option value="5" >Combos</option>
+							    	<option value="6">Cuisine</option>
+							        <option value="7">Desserts</option>
+							        <option value="8">Dinner</option>
+							        <option value="9">Drinks</option>
+							        <option value="10" >Entrees</option>
+							        <option value="11">Kid's specials</option>
+							        <option value="12">Lunch</option>
+							        <option value="13">Salads</option>
+							        <option value="14">Sauces</option>
+							        <option value="15" >Side Dishes</option>
+							        <option value="16">Smoothies</option>
+							        <option value="17">Soups</option>
+							        <option value="18">Vegan</option>
+							        <option value="19">Vegetarian</option>	        
 							    </select>
 								</td>
                             </div>

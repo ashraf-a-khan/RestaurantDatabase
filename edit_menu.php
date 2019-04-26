@@ -8,6 +8,8 @@ $id = $_GET['id'];
 $getfood = $_GET['food'];
 
 
+echo $_SESSION['universal_menu_id'];
+
 $food_err = "";
 $price_err = "";
 $category_id_err = "";
@@ -26,17 +28,21 @@ function sanitize_input($data)
 
 // echo $getfood;
 // echo $_GET['category_id'];
-$sql = "SELECT * FROM menu WHERE id = '".$id."' AND food = '".$getfood."' ; ";
-$result = $conn -> query($sql);
-if($result->num_rows > 0) 
+//http://localhost/DatabaseRestaurant/edit_menu.php?id=3&food=Caprice%20Garlic%20Bread&price=10.99&category_id=2
+
+$sql = "SELECT * FROM items WHERE id = '".$_GET['id']."'";
+
+$result_1 = $conn->query($sql);
+if($result_1->num_rows > 0)
 {
-    while( $row = $result->fetch_assoc()) 
+    while( $row = $result_1->fetch_assoc()) 
     {
-	    $food = $row['food'];
+	    $food = $row['name'];
 	    $price = $row['price'];
 	    $category_id = $row['category_id'];
-
-    } 
+   } 
+}else{
+	echo "nOt gooDO";
 }
 if(isset($_POST['update']))
 {
@@ -51,9 +57,9 @@ if(isset($_POST['update']))
 	}else if(empty($update_category_id)){
 		$category_id_err = "Category id cannot be empty!";
 	}else{
-		$sql_update = "UPDATE menu SET food = '".$_POST['food']."', price = '". $_POST['price'] ."', category_id = '".$_POST['category_id']."' WHERE food = '".$getfood."' AND category_id = '".$_GET['category_id']."';";
+		$sql_update = "UPDATE items SET name = '".$_POST['food']."', price = '". $_POST['price'] ."', category_id = '".$_POST['category_id']."' WHERE id = '".$id."';";
 		if($conn->query($sql_update)){
-			header('Location: view_menu.php?id='.$id.'');
+			header('Location: view_menu.php?id='.$_SESSION['universal_menu_id'].'');
 
 		}
 		else
@@ -67,9 +73,6 @@ if(isset($_POST['update']))
 
 $sql_restaurant = "SELECT * FROM restaurant_info WHERE id = '".$_GET['id']."'";
 $result_restaurant = $conn->query($sql_restaurant);
-
-$sql_Menu = "SELECT menu.id, menu.food, menu.price, menu.category_id FROM restaurant_menu, menu WHERE menu.food != '' AND menu.id = restaurant_menu.menu_id AND restaurant_menu.restaurant_id = '".$_GET['id']."' ORDER BY menu.category_id";
-$result_menu = $conn->query($sql_Menu);
 
 $sql_openHours = "SELECT open_hours_info.days_open, open_hours_info.working_hours, open_hours_info.specials FROM restaurant_info, open_hours_info WHERE restaurant_info.open_hours_id = open_hours_info.id AND restaurant_info.id = '".$_GET['id']."'";
 $result_openHours = $conn->query($sql_openHours);
@@ -168,25 +171,25 @@ if($result_openHours->num_rows > 0)
                                 <!-- <input type="text" name="x" id="username" class="form-control"> -->
 		                    	<td>
 							    <select style="text-align: center" name="category_id">
-							    	<option value="All-day">All-day</option>
-							        <option value="Appetizers">Appetizers</option>
-							        <option value="Breakfast">Breakfast</option>
-							        <option value="Burgers">Burgers</option>
-							        <option value="Combos" >Combos</option>
-							    	<option value="Cuisine">Cuisine</option>
-							        <option value="Desserts">Desserts</option>
-							        <option value="Dinner">Dinner</option>
-							        <option value="Drinks">Drinks</option>
-							        <option value="Entrees" >Entrees</option>
-							        <option value="Kid's specials">Kid's specials</option>
-							        <option value="Lunch">Lunch</option>
-							        <option value="Salads">Salads</option>
-							        <option value="Sauces">Sauces</option>
-							        <option value="Side Dishes" >Side Dishes</option>
-							        <option value="Smoothies">Smoothies</option>
-							        <option value="Soups">Soups</option>
-							        <option value="Vegan">Vegan</option>
-							        <option value="Vegetarian">Vegetarian</option>	        
+							    	<option value="1">All-day</option>
+							        <option value="2">Appetizers</option>
+							        <option value="3">Breakfast</option>
+							        <option value="4">Burgers</option>
+							        <option value="5" >Combos</option>
+							    	<option value="6">Cuisine</option>
+							        <option value="7">Desserts</option>
+							        <option value="8">Dinner</option>
+							        <option value="9">Drinks</option>
+							        <option value="10" >Entrees</option>
+							        <option value="11">Kid's specials</option>
+							        <option value="12">Lunch</option>
+							        <option value="13">Salads</option>
+							        <option value="14">Sauces</option>
+							        <option value="15" >Side Dishes</option>
+							        <option value="16">Smoothies</option>
+							        <option value="17">Soups</option>
+							        <option value="18">Vegan</option>
+							        <option value="19">Vegetarian</option>	        
 							    </select>
 								</td>
                             </div>
