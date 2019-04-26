@@ -102,8 +102,8 @@ echo "<br>";
 echo "<br>";
 
 
-         echo "<button><a href = 'add_to_menu.php?id=".$_GET["id"]."'>Add items to this menu</a></button>"; 
 
+         echo "<button><a href = 'add_to_menu.php?id=".$menu_id."'>Add items to this menu</a></button>";  //ADD it from that particular MENU and not RESTAURANT table... 
                                   ?>
       
   <div class="table-responsive">          

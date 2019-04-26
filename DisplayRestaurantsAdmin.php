@@ -189,8 +189,23 @@ if(isset($_GET['title']))
 }else{
   $sql_display_restaurants = "SELECT * FROM restaurant_info WHERE id IN ($restaurant_id_arrFinal) ORDER BY FIELD (id, $restaurant_id_arrFinal)";
 }
+$sql_menu_id = "SELECT menu_id from restaurant_menu where restaurant_id in 
+     (select id from restaurant_info WHERE id IN ($restaurant_id_arrFinal) ORDER BY FIELD (id, $restaurant_id_arrFinal))";
+
+
 $result4 = $conn -> query($sql_display_restaurants);
 
+
+
+$result5 = $conn ->query($sql_menu_id);
+
+
+if($result5->num_rows > 0){
+  while($row = $result5->fetch_assoc()){
+    // echo $row['menu_id'];
+    // echo "<br>";
+  }
+}
 
 ?>
 
@@ -198,7 +213,6 @@ $result4 = $conn -> query($sql_display_restaurants);
   <div class="column side"><a href = "DisplayRestaurantsAdmin.php?title=title">Restaurant Titles(tap to sort by name)</a></div>
   <div class="column middle">Restaurant Addresses</div>
   <div class="column middle">Restaurant Rating</div>
-
 </div>
 
 <?php
