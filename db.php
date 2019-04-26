@@ -2,7 +2,8 @@
 $servername = "localhost";
 $username = "root";
 $password = "MyAspirationE15";
-$db = "Restaurant";
+$db = "restaurant_2";
+// $db = "restaurant";
 
 $conn = new mysqli($servername, $username, $password, $db);
 

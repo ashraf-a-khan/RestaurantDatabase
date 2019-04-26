@@ -174,7 +174,7 @@ div.column.side:hover{
 
 <h2>Select Restaurants</h2>
 <p>Here is a list of restaurants for you to choose from.</p>
-<p><strong>Note:</strong> Flexbox is not supported in Internet Explorer 10 and earlier versions.</p>
+<p><strong>Note:</strong> This interface allows you to select the menu of individual restaurants, edit them and delete them. Also, you can add restaurants here.</p>
 
 <div class="header">
   <h2>Restaurant List</h2>
@@ -185,12 +185,11 @@ div.column.side:hover{
 
 if(isset($_GET['title']))
 {
-  $sql_display = "SELECT * FROM restaurant_info ORDER BY title";
+  $sql_display_restaurants = "SELECT * FROM restaurant_info ORDER BY title";
 }else{
-  $sql_display = "SELECT * FROM restaurant_info WHERE id IN ($restaurant_id_arrFinal) ORDER BY FIELD (id, $restaurant_id_arrFinal)";
+  $sql_display_restaurants = "SELECT * FROM restaurant_info WHERE id IN ($restaurant_id_arrFinal) ORDER BY FIELD (id, $restaurant_id_arrFinal)";
 }
-$result4 = $conn -> query($sql_display);
-
+$result4 = $conn -> query($sql_display_restaurants);
 
 
 ?>
@@ -210,15 +209,9 @@ if($result4->num_rows > 0)
 ?>        
   <div class="row">
 <?php
-        // echo "<a href='view_menu.php?id=".$row['id']."'>";
-
         echo  "<div class = 'column side'><a href='view_menu.php?id=".$row['id']."'>". $row['title']."</a></div>";
-
-        // echo "</a>";
         echo "<div class = 'column middle'>". $row['address_x'] . "-" . $row['address_y'] . "</div>";
         echo "<div class = 'column middle'>". $row['rating'] . " Star</div>";
-
-
 ?>
         </div>
 <?php        
@@ -231,7 +224,7 @@ else
 ?>
 
 <div class="footer">
-  <p>Footer</p>
+  <p>END</p>
 </div>
 
 </body>

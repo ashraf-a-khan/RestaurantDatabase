@@ -1,0 +1,22 @@
+CREATE TABLE `New_Restaurant`.`administrator` ( `user_id` VARCHAR(20) NOT NULL , `password` VARCHAR(20) NOT NULL ) ENGINE = InnoDB;
+
+CREATE TABLE `new_restaurant`.`open_hours_info` ( `id` INT(25) NOT NULL AUTO_INCREMENT , `days_open` VARCHAR(40) CHARACTER SET utf16 COLLATE utf16_general_ci NOT NULL , `working_hours` VARCHAR(25) CHARACTER SET utf16 COLLATE utf16_general_ci NOT NULL , `specials` VARCHAR(70) CHARACTER SET utf16 COLLATE utf16_general_ci NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+CREATE TABLE `new_restaurant`.`restaurant_info` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `title` VARCHAR(30) NOT NULL , `rating` INT(11) NOT NULL , `open_hours_id` INT(11) NOT NULL , `address_x` INT(11) NOT NULL , `address_y` INT(11) NOT NULL , `address_verbal` VARCHAR(11) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `restaurant_info` ADD CONSTRAINT `open_hours_id_fk` FOREIGN KEY (`open_hours_id`) REFERENCES `open_hours_info`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+CREATE TABLE `new_restaurant`.`menu` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `restaurant_id` INT(11) NOT NULL , `name` VARCHAR(40) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `menu` ADD CONSTRAINT `restaurant_id_fk` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant_info`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+CREATE TABLE `new_restaurant`.`category` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `menu_id` INT(11) NOT NULL , `name` VARCHAR(40) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `category` ADD CONSTRAINT `menu_id_fk` FOREIGN KEY (`menu_id`) REFERENCES `menu`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+CREATE TABLE `new_restaurant`.`Item` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `category_id` INT(11) NOT NULL , `name` VARCHAR(50) NOT NULL , `price` DECIMAL(6,2) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `item` ADD CONSTRAINT `category_id_fk` FOREIGN KEY (`category_id`) REFERENCES `category`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;

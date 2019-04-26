@@ -6,8 +6,43 @@ include 'db.php';
 $sql_restaurant = "SELECT * FROM restaurant_info WHERE id = '".$_GET['id']."'";
 $result_restaurant = $conn->query($sql_restaurant);
 
-$sql_Menu = "SELECT menu.id, menu.food, menu.price, menu.category_id FROM restaurant_menu, menu WHERE menu.food != '' AND menu.id = restaurant_menu.menu_id AND restaurant_menu.restaurant_id = '".$_GET['id']."' ORDER BY menu.category_id";
-$result_menu = $conn->query($sql_Menu);
+$sql_get_menu = "SELECT * FROM restaurant_menu WHERE restaurant_id = '".$_GET['id']."'";
+$result_get_menu_id = $conn->query($sql_get_menu);
+
+
+$menu_id = "";
+if($result_get_menu_id->num_rows > 0)
+{
+  while($row = $result_get_menu_id->fetch_assoc()){
+    $menu_id = $row['menu_id'];
+  }
+}
+
+// echo $menu_id;
+$sql_category = "SELECT category.name from category where id in 
+                  (SELECT category_id from items WHERE id in 
+                    (SELECT item_id FROM menu_items WHERE menu_id = '".$menu_id."'))";
+$result_sql_category = $conn->query($sql_category);
+if($result_sql_category->num_rows > 0){
+  while($row = $result_sql_category->fetch_assoc()){
+    echo $row['name'];
+    echo "<br>";
+  }
+}
+
+
+$sql_menu_new = "SELECT * FROM items WHERE id IN (SELECT item_id FROM `menu_items` WHERE menu_id = '".$menu_id."')  order BY category_id";
+$result_menu_new = $conn->query($sql_menu_new);
+// if($result_menu_new->num_rows > 0){
+//   while($row = $result_menu_new->fetch_assoc()){
+//     echo $row['name'] . " $" . $row['price'];
+//     echo "<br>";
+//   }
+// }
+
+
+//$sql_Menu = "SELECT menu.id, menu.food, menu.price, menu.category_id FROM restaurant_menu, menu WHERE menu.food != '' AND menu.id = restaurant_menu.menu_id AND restaurant_menu.restaurant_id = '".$_GET['id']."' ORDER BY menu.category_id";
+//$result_menu = $conn->query($sql_Menu);
 
 $sql_openHours = "SELECT open_hours_info.days_open, open_hours_info.working_hours, open_hours_info.specials FROM restaurant_info, open_hours_info WHERE restaurant_info.open_hours_id = open_hours_info.id AND restaurant_info.id = '".$_GET['id']."'";
 $result_openHours = $conn->query($sql_openHours);
@@ -80,28 +115,37 @@ echo "<br>";
     <tbody>
 <?php
 
-if ($result_menu->num_rows > 0) 
+if ($result_menu_new->num_rows > 0) 
 {
-   while($row = $result_menu->fetch_assoc()) 
+   while($row = $result_menu_new->fetch_assoc()) 
     {
 ?>
 
       <tr>
         <td><?php echo $row["category_id"] ?></td>
-        <td><?php echo $row["food"] ?></td>
+        <td><?php echo $row["name"] ?></td>
         <td><?php echo "$". $row["price"] ?></td>
         <?php
          echo "<td><a href = 'edit_menu.php?id=".$row["id"]."&food=".$row["food"]."&price=".$row["price"]."&category_id=".$row['category_id']."'>Edit</a></td>"; 
-        ?>
-        <td><a href = "delete_menu_item.php">Delete</a></td>
+        
+        echo "<td><a href = 'delete_menu_item.php?id=".$row["id"]."&food=".$row["food"]."&price=".$row["price"]."&category_id=".$row['category_id']."'>Delete</a></td>";
+      ?>
       </tr>
 <?php
 
 
     }
 } else {
-    // echo "0 results";
+
 }
+// if($result_menu_new->num_rows > 0){
+//   while($row = $result_menu_new->fetch_assoc()){
+//     echo $row['name'] . " $" . $row['price'];
+//     echo "<br>";
+//   }
+// }
+
+
 
 
 ?>
