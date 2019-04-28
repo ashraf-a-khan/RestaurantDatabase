@@ -79,7 +79,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                 
                             </div>
                             <div class="form-group">
-                                <h4 class="text-center text-info"><a href="#">Customer access here</a></h4>
+                                <h4 class="text-center text-info"><a href="EnterLocationCustomer.php">Customer access here</a></h4>
                                 <br>
                             </div>
 
