@@ -1,28 +1,20 @@
 <?php
 include 'db.php';
 
-$id = $_GET['id'];
-$food = $_GET['food'];
-$price =  $_GET['price'];
-$category_id = $_GET['category_id'];
+$item_id = $_GET['id'];
 
-echo $id;
-echo $food;
-echo $price; 
-echo $category_id;
+echo $_SESSION['universal_menu_id'];
 
-// $sql_delete = "DELETE FROM
-//   menu
-// WHERE
-//   food = '".$food."'
-//   AND price = '".$price."'
-//   AND category_id = '".$category_id."'
-// ";
+
+$sql_delete = "DELETE FROM
+  items
+	WHERE
+  id = '".$item_id."'";
 
 
 if($conn->query($sql_delete) === TRUE)
 {
-	header('Location: view_menu.php?id='.$id.'');
+	header('Location: view_menu.php?id='.$_SESSION['universal_menu_id'].'');
 }
 else
 {
