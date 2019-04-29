@@ -1,9 +1,9 @@
 <?php
 include 'db.php';
 
-$title = $rating = $address_x = $address_y = $address_verbal =""; 
-$exists_error = "";
-$max_restaurant_id = "";
+$days_open = $working_hours = $specials =""; 
+//$exists_error = "";
+$max_open_hours_id="";
 
 function sanitize_input($data)
 {
@@ -15,10 +15,9 @@ function sanitize_input($data)
 
 if(isset($_POST['submit']))
 {	
-	$title = sanitize_input($_POST['title']);
-	$address_x = sanitize_input($_POST['address_x']);
-	$address_y = sanitize_input($_POST['address_y']);
-	$address_verbal = sanitize_input($_POST['address_verbal']);
+	$days_open = sanitize_input($_POST['days_open']);
+	$working_hours = sanitize_input($_POST['working_hours']);
+	$specials = sanitize_input($_POST['specials']);
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
 		$sql_if_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."' OR address_x = '".$address_x."' OR address_y = '".$address_y."' ";	
@@ -30,25 +29,40 @@ if(isset($_POST['submit']))
 		  // No rows are there.
 		  // echo '<br>nothing found';
 		  // echo $_POST['title'];
-			$sql_insert_into_items = "INSERT INTO `restaurant_info` (`title`, `rating`, `address_x`, `address_y`, `address_verbal`) VALUES ('".$title."', '".$_POST['rating']."', '".$address_x."', '". $address_y ."', '".$address_verbal."')";
-			$result_insert_into_items = mysqli_query($conn, $sql_insert_into_items);
-			if (!$result_insert_into_items){
+			mysqli_autocommit($conn, true);
+			$flag = true;
+
+			$sql_insert_into_open_hours = "INSERT INTO `open_hours_info` (`days_open`, `working_hours`, `specials`) VALUES ('".$days_open."', '".$working_hours."', '".$specials."')";
+			$result_insert_into_open_hours = mysqli_query($conn, $sql_insert_into_open_hours);
+			if (!$result_insert_into_open_hours){
+				$flag = false;
 			    echo "Error details: " . mysqli_error($conn) . ".";
-			} else {
-				$sql_get_max_restaurant_id = "SELECT MAX(id) FROM restaurant_info"; //RETRIEVING LATEST INSERTED ITEM ID FOR MENU_ITEMS TABLE
-				$result_get_max_restaurant_id = $conn->query($sql_get_max_restaurant_id);
-				if($result_get_max_restaurant_id->num_rows > 0){
-					while($row = $result_get_max_restaurant_id->fetch_assoc()){
-						$max_restaurant_id = $row['MAX(id)'];
-					}
+			} 
+			$sql_get_max_open_hours_id = "SELECT MAX(id) FROM open_hours_info";
+			$result_get_max_open_hours_id = $conn->query($sql_get_max_open_hours_id);
+			if($result_get_max_open_hours_id->num_rows > 0){
+				while($row = $result_get_max_open_hours_id->fetch_assoc()){
+					$max_open_hours_id = $row['MAX(id)'];
 				}
-				else
-				{
-					echo "no max id";
-				}
-				echo "Successfully inserted values for restaurant_info";
-				header('Location: add_open_hours_info.php?id='.$max_restaurant_id.'');
 			}
+			else
+			{
+				echo "no max id";
+			}
+			$sql_insert_hours_to_restaurant = "UPDATE restaurant_info SET open_hours_id = '".$max_open_hours_id."' WHERE id = '".$_GET['id']."'";
+			$result_insert_hours_to_restaurant = mysqli_query($conn, $sql_insert_hours_to_restaurant);
+			if (!$result_insert_hours_to_restaurant) {
+				$flag = false;
+			    echo "Error details: " . mysqli_error($conn) . ".";
+			}
+			if ($flag) {
+			    mysqli_commit($conn);
+				header('Location: create_menu_new_restaurant.php?rest_id='.$_GET['id'].'');
+			    // echo "All queries were executed successfully";
+			} else {
+				mysqli_rollback($conn);
+			    echo "All queries were rolled back";
+			} 
 		}	
 	}
 }
@@ -94,54 +108,72 @@ if(isset($_POST['submit']))
 			<div class="login100-more" style="background-image: url('images/bg-01.jpg');"></div>
 
 			<div class="wrap-login100 p-l-50 p-r-50 p-t-72 p-b-50">
-				<form class="login100-form validate-form" action = "<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-					<span class="login100-form-title p-b-59">
-						Add New Restaurant
-					</span>
-					<span class="label-input100"><strong>Restaurant</strong> -> Hours -> Menu</span>
+				
+				<span class="login100-form-title p-b-59">
+					Add Open Hours for Restaurant
+				</span>
+				<span class="label-input100">Restaurant -> <strong>Hours</strong> -> Menu</span>
+				<?php
+				if(isset($exists_error)){
+					echo $exists_error;
+				}
+				?>
+				<br>
+				<form class="login100-form validate-form" action = "index.php" method="post">
 					<?php
-					if(isset($exists_error)){
-						echo $exists_error;
+					$sql_open_hours = "SELECT * FROM open_hours_info";
+					$result_open_hours = $conn->query($sql_open_hours);
+
+					echo "<select name='days_open'>"; // Open your drop down box
+					while ($row = $result_open_hours->fetch_assoc()) {
+						echo "<option value='" . $row['id'] . "'>".$row['days_open']." " .$row['working_hours']. "</option>";
 					}
+					echo "</select>";
+
+
 					?>
 					<br>
-					<div class="wrap-input100 validate-input" data-validate="Title is required">
-						<span class="label-input100">Restaurant Title</span>
-						<input class="input100" type="text" name="title" placeholder="Title...">
-						<span class="focus-input100"></span>
-					</div>
+					<br>
+					<br>
+					<br>
 
-					<div class="wrap-input100 validate-input" data-validate = "Rating is required">
-						<span class="label-input100">Rating</span>
-						<input class="input100" type="number" name="rating" placeholder="Rating..." min="1" max="10">
-						<span class="focus-input100"></span>
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button name="save" type = "submit" class="login100-form-btn">
+								Submit selected open hours
+							</button>
+						</div>
 					</div>
-
-					<div class="wrap-input100 validate-input" data-validate="X coordinate">
-						<span class="label-input100">X axis</span>
-						<input class="input100" type="text" name="address_x" placeholder="X axis" min="1" max="100">
-						<span class="focus-input100"></span>
-					</div>
-
-					<div class="wrap-input100 validate-input" data-validate = "Y coordinate">
-						<span class="label-input100">Y axis</span>
-						<input class="input100" type="text" name="address_y" placeholder="Y axis" min="1" max="100">
+				</form>
+					<br>
+					<br>
+					<br>
+					<br>
+				<form class="login100-form validate-form" action = "<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+					<div class="wrap-input100" >
+						<span class="label-input100">Days open</span>
+						<input class="input100" type="text" name="days_open" placeholder="Monday to Friday">
 						<span class="focus-input100"></span>
 					</div>
 
 					<div class="wrap-input100" >
-						<span class="label-input100">Full Address with text (Optional)</span>
-						<input class="input100" type="text" name="address_verbal" placeholder="Full Address...">
+						<span class="label-input100">Working hours</span>
+						<input class="input100" type="text" name="working_hours" placeholder="9:00am to 5:00pm" >
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100" >
+						<span class="label-input100">Specials</span>
+						<input class="input100" type="text" name="specials" placeholder="30 Minutes or Free">
 						<span class="focus-input100"></span>
 					</div>
 					<div class="container-login100-form-btn">
 						<div class="wrap-login100-form-btn">
 							<div class="login100-form-bgbtn"></div>
 							<button name="submit" type = "submit" class="login100-form-btn">
-								Set open hours info
+								Submit
 							</button>
 						</div>
-
 					</div>
 				</form>
 			</div>

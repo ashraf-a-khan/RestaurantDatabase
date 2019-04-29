@@ -11,6 +11,7 @@ include 'db.php';
 // note: this is meant for InnoDB tables. won't work with MyISAM tables.
 
 $id = $_GET['id'];  
+$restaurant_id = "";
 // $new_item_id = "";
 // mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_ONLY);
 
@@ -58,7 +59,13 @@ $id = $_GET['id'];
 
 
 
-
+$sql_get_restaurant_id = "SELECT restaurant_id from restaurant_menu where menu_id = '".$_GET['id']."'";
+$result_get_restaurant_id = $conn->query($sql_get_restaurant_id);
+if($result_get_restaurant_id->num_rows > 0){
+	while($row = $result_get_restaurant_id->fetch_assoc()){
+		$restaurant_id = $row['restaurant_id'];		
+	}
+}
 
 
 
@@ -141,9 +148,9 @@ if(isset($_POST['update']))
 			}
 		
 			$sql_get_max_item_id = "SELECT MAX(id) FROM items"; //RETRIEVING LATEST INSERTED ITEM ID FOR MENU_ITEMS TABLE
-			$result_get_max_item_id = $conn->query($sql_get_max_item_id);
-			if($result_get_max_item_id->num_rows > 0){
-				while($row = $result_get_max_item_id->fetch_assoc()){
+			$result_get_restaurant_id = $conn->query($sql_get_max_item_id);
+			if($result_get_restaurant_id->num_rows > 0){
+				while($row = $result_get_restaurant_id->fetch_assoc()){
 					$max_item_id = $row['MAX(id)'];		
 				}
 			}
@@ -166,7 +173,7 @@ if(isset($_POST['update']))
 			}
 			if ($flag) {
 			    mysqli_commit($conn);
-				header('Location: view_menu.php?id='.$id.'');
+				header('Location: view_menu.php?id='.$restaurant_id.'');
 			    echo "All queries were executed successfully";
 			} else {
 				mysqli_rollback($conn);
@@ -224,7 +231,7 @@ if(isset($_POST['update']))
                 <div id="login-column" class="col-md-6">
                     <div id="login-box" class="col-md-12">
                         <!-- <form id="login-form" class="form" action="DisplayRestaurantsAdmin.php" method="post"> -->
-                            <h3 class="text-center text-info">Add name to Menu</h3>
+                            <h3 class="text-center text-info">Add items to Menu</h3>
                         	<form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
 
                             <div class="form-group">

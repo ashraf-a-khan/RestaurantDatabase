@@ -57,6 +57,31 @@ $result_openHours = $conn->query($sql_openHours);
 <!DOCTYPE html>
 <html>
 <head>
+  <!--===============================================================================================-->  
+  <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->  
+  <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->  
+  <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="css/util.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -127,9 +152,9 @@ if ($result_menu_new->num_rows > 0)
 ?>
 
       <tr>
-        <td><?php echo $row["category_id"] ?></td>
-        <td><?php echo $row["name"] ?></td>
-        <td><?php echo "$". $row["price"] ?></td>
+        <td><p><?php echo $row["category_id"] ?></p></td>
+        <td><p><?php echo $row["name"] ?></p></td>
+        <td><p><?php echo "$". $row["price"] ?></p></td>
         <?php
         // echo "<td><a href = 'edit_menu.php?id=".$row["id"]."'>Edit</a></td>"; 
         // echo "<td><a href = 'delete_menu_item.php?id=".$row["id"]."'>Delete</a></td>";

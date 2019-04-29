@@ -98,6 +98,34 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- <title>Login V13</title> -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->  
+  <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->  
+  <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->  
+  <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="css/util.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+
 <title>CSS Template</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -211,8 +239,8 @@ if($result5->num_rows > 0){
 
 <div class="row">
   <div class="column side"><a href = "DisplayRestaurantsAdmin.php?title=title">Restaurant Titles(tap to sort by name)</a></div>
-  <div class="column middle">Restaurant Addresses</div>
-  <div class="column middle">Restaurant Rating</div>
+  <div class="column middle"><p>Restaurant Addresses</p></div>
+  <div class="column middle"><p>Restaurant Rating</p></div>
 </div>
 
 <?php
@@ -224,8 +252,8 @@ if($result4->num_rows > 0)
   <div class="row">
 <?php
         echo  "<div class = 'column side'><a href='view_menu.php?id=".$row['id']."'>". $row['title']."</a></div>";
-        echo "<div class = 'column middle'>". $row['address_x'] . "-" . $row['address_y'] . "</div>";
-        echo "<div class = 'column middle'>". $row['rating'] . " Star</div>";
+        echo "<div class = 'column middle'><p>". $row['address_x'] . "-" . $row['address_y'] . "</p></div>";
+        echo "<div class = 'column middle'><p>". $row['rating'] . " Star</p></div>";
 ?>
         </div>
 <?php        
