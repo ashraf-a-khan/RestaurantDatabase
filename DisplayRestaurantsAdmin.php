@@ -137,7 +137,7 @@ body {
    -webkit-flex: 3;
    -ms-flex: 3;
    flex: 3;
-   background-color:#EAEAEA;
+   background-color: #f1f1f1;
 }
 
 /* Middle column */
@@ -146,7 +146,7 @@ body {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  background-color:#EAEAEA;
+  background-color: #f1f1f1;
 }
 
 /* Style the footer */
@@ -162,7 +162,7 @@ div.column.side:hover{
 }
 
 /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
-@media (max-width: 300px) {
+@media (max-width: 200px) { 
   .row {
     -webkit-flex-direction: column;
     flex-direction: column;
@@ -170,14 +170,14 @@ div.column.side:hover{
 }
 </style>
 </head>
-<body>
+<body background="img.jpg">
 
 <h2>Select Restaurants</h2>
 <p>Here is a list of restaurants for you to choose from.</p>
 <p><strong>Note:</strong> This interface allows you to select the menu of individual restaurants, edit them and delete them. Also, you can add restaurants here.</p>
 
 <div class="header">
-  <h2>Restaurant List</h2>
+  <h2>Restaurant List</h2> <p><a href = "add_new_restaurant.php">Click here to add a new Restaurant</a></p>
 </div>
 
 

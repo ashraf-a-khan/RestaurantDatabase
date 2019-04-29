@@ -106,7 +106,8 @@ if(isset($_POST['update']))
 		else if(empty($price))
 		{
 			$price_err = "The price field cannot be empty";
-		}else{
+		}
+		else{
 			// $sql = "INSERT INTO items ( 
 			// category_id,
 			// name,
