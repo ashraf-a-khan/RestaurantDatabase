@@ -15,7 +15,7 @@ function sanitize_input($data)
 
 if(isset($_POST['submit']))
 {	
-	$title = sanitize_input($_POST['title']);
+	$title = $_POST['title'];
 	$address_x = sanitize_input($_POST['address_x']);
 	$address_y = sanitize_input($_POST['address_y']);
 	$address_verbal = sanitize_input($_POST['address_verbal']);
@@ -30,7 +30,7 @@ if(isset($_POST['submit']))
 		  // No rows are there.
 		  // echo '<br>nothing found';
 		  // echo $_POST['title'];
-			$sql_insert_into_items = "INSERT INTO `restaurant_info` (`title`, `rating`, `address_x`, `address_y`, `address_verbal`) VALUES ('".$title."', '".$_POST['rating']."', '".$address_x."', '". $address_y ."', '".$address_verbal."')";
+			$sql_insert_into_items = "INSERT INTO `restaurant_info` (`title`, `rating`, `address_x`, `address_y`, `address_verbal`) VALUES ('".mysqli_real_escape_string($title)."', '".$_POST['rating']."', '".$address_x."', '". $address_y ."', '".$address_verbal."')";
 			$result_insert_into_items = mysqli_query($conn, $sql_insert_into_items);
 			if (!$result_insert_into_items){
 			    echo "Error details: " . mysqli_error($conn) . ".";
@@ -100,8 +100,10 @@ if(isset($_POST['submit']))
 					</span>
 					<span class="label-input100"><strong>Restaurant</strong> -> Hours -> Menu</span>
 					<?php
-					if(isset($exists_error)){
-						echo $exists_error;
+					if(empty($exists_error)){
+					}else{
+						echo "<strong>".$exists_error."</strong>";
+					
 					}
 					?>
 					<br>

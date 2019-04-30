@@ -172,14 +172,15 @@ if ($result_menu_new->num_rows > 0)
         <td><p><?php echo "$". $row["price"] ?></p></td>
         <?php
         echo "<td><a href = 'edit_menu.php?id=".$row["id"]."'>Edit</a></td>"; 
-        echo "<td><a href = 'delete_menu_item.php?id=".$row["id"]."'>Delete</a></td>";
+        //echo "<td><a href = 'delete_menu_item.php?id=".$row["id"]."'>Delete</a></td>";
+        echo "<td><a onClick=\"javascript: return confirm('Please confirm deletion');\" href='delete_menu_item.php?id=".$row["id"]."'>Delete</a></td><tr>"; //use double quotes for js inside php!
+
      }
 }     
 
 
-$sql_get_rowcount_menu = "SELECT COUNT(*) AS num FROM `menu_items` WHERE menu_id = '".$menu_id."'
-";
-$row = mysql_fetch_assoc($sql_get_rowcount_menu);
+$sql_get_rowcount_menu = "SELECT COUNT(*) AS num FROM `menu_items` WHERE menu_id = '".$menu_id."'";
+$row = fetch_assoc($sql_get_rowcount_menu);
 $row_remaining = $row['num'];
 
 echo $row_remaining;

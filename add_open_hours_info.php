@@ -15,17 +15,17 @@ function sanitize_input($data)
 
 if(isset($_POST['submit']))
 {	
-	$days_open = sanitize_input($_POST['days_open']);
-	$working_hours = sanitize_input($_POST['working_hours']);
-	$specials = sanitize_input($_POST['specials']);
-	if($_SERVER['REQUEST_METHOD'] == "POST")
-	{
-		$sql_if_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."' OR address_x = '".$address_x."' OR address_y = '".$address_y."' ";	
-		$result_if_exists = mysqli_query($conn, $sql_if_exists);
-		if (mysqli_num_rows($result_if_exists)) {
-		  // Rows are there.
-		  $exists_error = "You have entered a value for the primary keys which exist in the database";
-		} else {
+	// $days_open = sanitize_input($_POST['days_open']);
+	// $working_hours = sanitize_input($_POST['working_hours']);
+	// $specials = sanitize_input($_POST['specials']);
+	// if($_SERVER['REQUEST_METHOD'] == "POST")
+	// {
+	// 	$sql_if_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."' OR address_x = '".$address_x."' OR address_y = '".$address_y."' ";	
+	// 	$result_if_exists = mysqli_query($conn, $sql_if_exists);
+	// 	if (mysqli_num_rows($result_if_exists)) {
+	// 	  // Rows are there.
+	// 	  $exists_error = "You have entered a value for the primary keys which exist in the database";
+	// 	} else {
 		  // No rows are there.
 		  // echo '<br>nothing found';
 		  // echo $_POST['title'];
@@ -63,7 +63,7 @@ if(isset($_POST['submit']))
 				mysqli_rollback($conn);
 			    echo "All queries were rolled back";
 			} 
-		}	
+		//}	
 	}
 }
 
@@ -119,7 +119,7 @@ if(isset($_POST['submit']))
 				}
 				?>
 				<br>
-				<form class="login100-form validate-form" action = "index.php" method="post">
+				<!-- <form class="login100-form validate-form" action = "index.php" method="post">
 					<?php
 					$sql_open_hours = "SELECT * FROM open_hours_info";
 					$result_open_hours = $conn->query($sql_open_hours);
@@ -145,7 +145,7 @@ if(isset($_POST['submit']))
 							</button>
 						</div>
 					</div>
-				</form>
+				</form> -->
 					<br>
 					<br>
 					<br>
