@@ -101,9 +101,7 @@ $result_openHours = $conn->query($sql_openHours);
 </head>
 <body>
 
-<form action="EnterLocationAdmin.php">
-    <input type="submit" value="Back to Selecting Address" >
-</form>
+<a href = "DisplayRestaurantsAdmin.php?title=title">Go to Restaurant List</a>
 
 <div class="container">
 <br>

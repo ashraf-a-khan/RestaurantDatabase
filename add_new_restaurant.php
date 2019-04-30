@@ -15,10 +15,11 @@ function sanitize_input($data)
 
 if(isset($_POST['submit']))
 {	
-	$title = sanitize_input($_POST['title']);
+	$title = addslashes($_POST['title']);
 	$address_x = sanitize_input($_POST['address_x']);
 	$address_y = sanitize_input($_POST['address_y']);
 	$address_verbal = sanitize_input($_POST['address_verbal']);
+	echo mysqli_real_escape_string($title);
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
 		$sql_if_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."' OR address_x = '".$address_x."' OR address_y = '".$address_y."' ";	

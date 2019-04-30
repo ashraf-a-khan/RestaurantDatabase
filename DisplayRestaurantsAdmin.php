@@ -226,14 +226,12 @@ $result4 = $conn -> query($sql_display_restaurants);
 
 $result5 = $conn ->query($sql_menu_id);
 
-
 if($result5->num_rows > 0){
   while($row = $result5->fetch_assoc()){
     // echo $row['menu_id'];
     // echo "<br>";
   }
 }
-
 ?>
 
 <div class="row">
