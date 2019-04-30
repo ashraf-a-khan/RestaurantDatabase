@@ -33,21 +33,17 @@ if($result_sql_category->num_rows > 0){
   }
 }
 
+
+
 // print_r($category);
 
 
 $sql_menu_new = "SELECT * FROM items WHERE id IN (SELECT item_id FROM `menu_items` WHERE menu_id = '".$menu_id."')  order BY category_id";
 $result_menu_new = $conn->query($sql_menu_new);
-// if($result_menu_new->num_rows > 0){
-//   while($row = $result_menu_new->fetch_assoc()){
-//     echo $row['name'] . " $" . $row['price'];
-//     echo "<br>";
-//   }
-// }
 
-
-//$sql_Menu = "SELECT menu.id, menu.food, menu.price, menu.category_id FROM restaurant_menu, menu WHERE menu.food != '' AND menu.id = restaurant_menu.menu_id AND restaurant_menu.restaurant_id = '".$_GET['id']."' ORDER BY menu.category_id";
-//$result_menu = $conn->query($sql_Menu);
+// $sql_get_rowcount_menu = "SELECT COUNT(*) FROM `menu_items` WHERE menu_id = '".$menu_id."'
+// ";
+// $result_get_rowcount_menu = $conn->query($sql_get_rowcount_menu);
 
 $sql_openHours = "SELECT open_hours_info.days_open, open_hours_info.working_hours, open_hours_info.specials FROM restaurant_info, open_hours_info WHERE restaurant_info.open_hours_id = open_hours_info.id AND restaurant_info.id = '".$_GET['id']."'";
 $result_openHours = $conn->query($sql_openHours);
@@ -87,6 +83,21 @@ $result_openHours = $conn->query($sql_openHours);
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	<title></title>
+  <style type="text/css">
+    h1 
+    {
+      color:red;
+      font-family: Poppins-Regular;
+      font-size: 35px;
+      line-height: 1.7;
+      /*color: #666666;*/
+      margin: 0px;
+      transition: all 0.4s;
+      -webkit-transition: all 0.4s;
+      -o-transition: all 0.4s;
+      -moz-transition: all 0.4s;
+    }
+  </style>
 </head>
 <body>
 
@@ -98,14 +109,16 @@ $result_openHours = $conn->query($sql_openHours);
 <br>
 <br>
   <?php
+
+
   if($result_restaurant->num_rows > 0)
 {
   while($row = $result_restaurant->fetch_assoc()) 
     {
     	echo "<h1>". $row['title']. "</h1>";
-    	echo "<h4>" . $row['address_x'] . "-" . $row['address_y'] . " ";
-    	echo $row['address_verbal']. "</h4>";
-    	echo "<h4>" ."Restaurant Rating: ".$row['rating']. "</h4>";
+    	echo "<p>" . $row['address_x'] . "-" . $row['address_y'] . " ";
+    	echo $row['address_verbal']. "</p>";
+    	echo "<p>" ."Restaurant Rating: ".$row['rating']. "</p>";
     }
  }else{
 
@@ -120,14 +133,10 @@ if($result_openHours->num_rows > 0)
 		echo "<p> Specials: " . $row['specials'] ."</p>";
 	}
 }
-echo "<br>";
-echo "<br>";
-echo "<br>";
-
-
-
+         echo "<br>";
          echo "<button><a href = 'add_to_menu.php?id=".$menu_id."'>Add items to this menu</a></button>";  //ADD it from that particular MENU and not RESTAURANT table... 
-                                  ?>
+    echo "<p>Categories available in this menu: ".implode(", ", $category)."</p>";
+    ?>
       
   <div class="table-responsive">          
   <table class="table">
@@ -142,6 +151,14 @@ echo "<br>";
     </thead>
     <tbody>
 <?php
+// $row_remaining="";
+// if($result_get_rowcount_menu > 0){
+//   $row_remaining = $result_get_rowcount_menu;
+// }
+
+// echo $row_remaining;
+
+
 
 if ($result_menu_new->num_rows > 0) 
 {
@@ -156,26 +173,18 @@ if ($result_menu_new->num_rows > 0)
         <?php
         echo "<td><a href = 'edit_menu.php?id=".$row["id"]."'>Edit</a></td>"; 
         echo "<td><a href = 'delete_menu_item.php?id=".$row["id"]."'>Delete</a></td>";
-      ?>
+     }
+}     
+
+
+$sql_get_rowcount_menu = "SELECT COUNT(*) AS num FROM `menu_items` WHERE menu_id = '".$menu_id."'
+";
+$row = mysql_fetch_assoc($sql_get_rowcount_menu);
+$row_remaining = $row['num'];
+
+echo $row_remaining;
+ ?>
       </tr>
-<?php
-
-
-    }
-} else {
-
-}
-// if($result_menu_new->num_rows > 0){
-//   while($row = $result_menu_new->fetch_assoc()){
-//     echo $row['name'] . " $" . $row['price'];
-//     echo "<br>";
-//   }
-// }
-
-
-
-
-?>
 
     </tbody>
   </table>

@@ -113,7 +113,7 @@ if(isset($_POST['submit']))
 			<div class="wrap-login100 p-l-50 p-r-50 p-t-72 p-b-50">
 				
 				<span class="login100-form-title p-b-59">
-					Add Open Hours for Restaurant
+					Add menu name for Restaurant
 				</span>
 				<span class="label-input100">Restaurant -> <strong>Hours</strong> -> Menu</span>
 				<?php

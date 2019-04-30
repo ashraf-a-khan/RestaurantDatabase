@@ -151,7 +151,7 @@ if($result_openHours->num_rows > 0)
                 <div id="login-column" class="col-md-6">
                     <div id="login-box" class="col-md-12">
                         <!-- <form id="login-form" class="form" action="DisplayRestaurantsAdmin.php" method="post"> -->
-                            <h3 class="text-center text-info">Edit form</h3>
+                            <h3 class="text-center text-info">Edit menu item</h3>
                         	<form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
 
                             <div class="form-group">

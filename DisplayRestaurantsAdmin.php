@@ -198,7 +198,7 @@ div.column.side:hover{
 }
 </style>
 </head>
-<body background="img.jpg">
+<body>
 
 <h2>Select Restaurants</h2>
 <p>Here is a list of restaurants for you to choose from.</p>
@@ -210,7 +210,6 @@ div.column.side:hover{
 
 
 <?php
-
 if(isset($_GET['title']))
 {
   $sql_display_restaurants = "SELECT * FROM restaurant_info ORDER BY title";
