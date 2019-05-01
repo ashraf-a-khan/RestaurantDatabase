@@ -3,6 +3,7 @@ include 'db.php';
 session_start();
 // $x2=$_POST['x'];
 // $y2=$_POST['y'];
+$exceedError = $emptyError = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST") 
 {
@@ -12,9 +13,15 @@ if(isset($_POST['submit']))
 	// echo $_POST['x'];
 	// echo $_POST['y'];
 
-	$x2=$_POST['x'];
-	$y2=$_POST['y'];
-		
+  if($_POST['x'] > 100 || $_POST['y'] > 100){
+    $exceedError =  "ERROR: Coordinates need to be between 1 and 100";
+  }else if(empty($_POST['x']) || empty($_POST['y'])){
+  	$emptyError = "ERROR: Coordinates cannot be empty";
+  
+  }else{
+  	$x2=$_POST['x'];
+  	$y2=$_POST['y'];
+	}
 
 
 	function distanceFormula($x1, $x2, $y1, $y2) {
@@ -49,8 +56,8 @@ if(isset($_POST['submit']))
 	$distArr2 = array();
 	// echo $_GET['x'];
 	// echo $_GET['y'];
-    $myXAxis = mysqli_real_escape_string($conn,$_POST['x']);
-    $myYAxis = mysqli_real_escape_string($conn,$_POST['y']); 
+    $myXAxis = mysqli_real_escape_string($conn,$x2);
+    $myYAxis = mysqli_real_escape_string($conn,$y2); 
 
     foreach ($master as $key=>$value){
     	array_push($distArr, distanceFormula($key, $myXAxis, $value, $myYAxis));	
@@ -165,8 +172,8 @@ input[type=text], select {
 }
 div {
   border-radius: 2px;
-  background-color: #f2f2f2;
-  padding: 2px;
+  /*background-color: #f2f2f2;*/
+  padding: 0px;
 }
 
 /* Style the header */
@@ -230,9 +237,17 @@ div.column.side:hover{
 </style>
 </head>
 <body>
+<button><a href = "index.php">Go to Admin/Customer selection</a></button>
 
 <h2>Select Restaurants</h2>
 <form action = "<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" name='myform' method="post">
+	<?php
+	if(isset($exceedError)){
+		echo $exceedError;
+	}else if($isset($emptyError)){
+		echo $emptyError;
+	}
+	?>
 	<p>What is your x and y axis:
 	<div class="form-group">
 		<label class="text-info">x axis:</label>

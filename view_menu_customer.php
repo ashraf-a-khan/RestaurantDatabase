@@ -21,22 +21,22 @@ if($result_get_menu_id->num_rows > 0)
 
 $category = array();
 // echo $menu_id;
-$sql_category = "SELECT category.id, category.name from category where id in 
-                  (SELECT category_id from items WHERE id in 
-                    (SELECT item_id FROM menu_items WHERE menu_id = '".$menu_id."'))";
-$result_sql_category = $conn->query($sql_category);
-if($result_sql_category->num_rows > 0){
-  while($row = $result_sql_category->fetch_assoc()){
-    // echo $row['name'];
-    // echo "<br>";
-    array_push($category,$row['name']);  
-  }
-}
+// $sql_category = "SELECT category.id, category.name from category where id in 
+//                   (SELECT category_id from items WHERE id in 
+//                     (SELECT item_id FROM menu_items WHERE menu_id = '".$menu_id."'))";
+// $result_sql_category = $conn->query($sql_category);
+// if($result_sql_category->num_rows > 0){
+//   while($row = $result_sql_category->fetch_assoc()){
+//     // echo $row['name'];
+//     // echo "<br>";
+//     array_push($category,$row['name']);  
+//   }
+// }
 
 // print_r($category);
 
 
-$sql_menu_new = "SELECT * FROM items WHERE id IN (SELECT item_id FROM `menu_items` WHERE menu_id = '".$menu_id."')  order BY category_id";
+$sql_menu_new = "SELECT * FROM items WHERE id IN (SELECT item_id FROM `menu_items` WHERE menu_id = '".$menu_id."')  order BY category_name";
 $result_menu_new = $conn->query($sql_menu_new);
 // if($result_menu_new->num_rows > 0){
 //   while($row = $result_menu_new->fetch_assoc()){
@@ -90,9 +90,7 @@ $result_openHours = $conn->query($sql_openHours);
 </head>
 <body>
 
-<form action="EnterLocationAdmin.php">
-    <input type="submit" value="Back to Selecting Address" >
-</form>
+<a href = "DisplayRestaurantsCustomer.php?title=title">Go to Customer Restaurant List</a>
 
 <div class="container">
 <br>
@@ -152,7 +150,7 @@ if ($result_menu_new->num_rows > 0)
 ?>
 
       <tr>
-        <td><p><?php echo $row["category_id"] ?></p></td>
+        <td><p><?php echo $row["category_name"] ?></p></td>
         <td><p><?php echo $row["name"] ?></p></td>
         <td><p><?php echo "$". $row["price"] ?></p></td>
         <?php

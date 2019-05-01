@@ -42,7 +42,7 @@ if($result_1->num_rows > 0)
 	    $category_name = addslashes($row['category_name']);
    } 
 }else{
-	echo "nOt gooDO";
+	echo "nOt gooD";
 }
 if(isset($_POST['update']))
 {
@@ -57,7 +57,7 @@ if(isset($_POST['update']))
 	}else if(empty($update_category_name)){
 		$category_id_err = "Category name cannot be empty!";
 	}else{
-		$sql_update = "UPDATE items SET name = '".$_POST['food']."', price = '". $_POST['price'] ."', category_name = '".$_POST['category_name']."' WHERE id = '".$id."';";
+		$sql_update = "UPDATE items SET name = '".$update_food."', price = '". $update_price ."', category_name = '".$update_category_name."' WHERE id = '".$id."';";
 		if($conn->query($sql_update)){
 			header('Location: view_menu.php?id='.$_SESSION['universal_menu_id'].'');
 
@@ -171,25 +171,25 @@ if($result_openHours->num_rows > 0)
                                 <!-- <input type="text" name="x" id="username" class="form-control"> -->
 		                    	<td>
 							    <select style="text-align: center" name="category_name">
-							    	<option value="1">All-day</option>
-							        <option value="2">Appetizers</option>
-							        <option value="3">Breakfast</option>
-							        <option value="4">Burgers</option>
-							        <option value="5" >Combos</option>
-							    	<option value="6">Cuisine</option>
-							        <option value="7">Desserts</option>
-							        <option value="8">Dinner</option>
-							        <option value="9">Drinks</option>
-							        <option value="10" >Entrees</option>
-							        <option value="11">Kid's specials</option>
-							        <option value="12">Lunch</option>
-							        <option value="13">Salads</option>
-							        <option value="14">Sauces</option>
-							        <option value="15" >Side Dishes</option>
-							        <option value="16">Smoothies</option>
-							        <option value="17">Soups</option>
-							        <option value="18">Vegan</option>
-							        <option value="19">Vegetarian</option>	        
+							    	<option value="All-day">All-day</option>
+							        <option value="Appetizers">Appetizers</option>
+							        <option value="Breakfast">Breakfast</option>
+							        <option value="Burgers">Burgers</option>
+							        <option value="Combos" >Combos</option>
+							    	<option value="Cuisine">Cuisine</option>
+							        <option value="Desserts">Desserts</option>
+							        <option value="Dinner">Dinner</option>
+							        <option value="Drinks">Drinks</option>
+							        <option value="Entrees" >Entrees</option>
+							        <option value="Kid's specials">Kid's specials</option>
+							        <option value="Lunch">Lunch</option>
+							        <option value="Salads">Salads</option>
+							        <option value="Sauces">Sauces</option>
+							        <option value="Side Dishes" >Side Dishes</option>
+							        <option value="Smoothies">Smoothies</option>
+							        <option value="Soups">Soups</option>
+							        <option value="Vegan">Vegan</option>
+							        <option value="Vegetarian">Vegetarian</option>	        
 							    </select>
 								</td>
                             </div>
