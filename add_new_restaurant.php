@@ -2,9 +2,10 @@
 include 'db.php';
 
 $title = $rating = $address_x = $address_y = $address_verbal =""; 
-$exists_error = "";
+$exists_coordinates_error = "";
 $max_restaurant_id = "";
-
+$franchise_menu_id="";
+$latest_restaurant_id = "";
 function sanitize_input($data)
 {
     $data = trim($data);
@@ -22,18 +23,70 @@ if(isset($_POST['submit']))
 	// echo mysqli_real_escape_string($title);
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
-		$sql_if_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."' AND address_x = '".$address_x."' AND address_y = '".$address_y."' ";	
-		$result_if_exists = mysqli_query($conn, $sql_if_exists);
-		if (mysqli_num_rows($result_if_exists)) {
+		$sql_if_exists_coordinates = "SELECT * FROM restaurant_info WHERE address_x = '".$address_x."' AND address_y = '".$address_y."' ";	
+		$result_if_exists_coordinates = mysqli_query($conn, $sql_if_exists_coordinates);
+
+		$sql_if_restaurant_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."'";
+		$result_if_restaurant_exists = mysqli_query($conn, $sql_if_restaurant_exists);
+
+		if (mysqli_num_rows($result_if_exists_coordinates)) {
 		  // Rows are there.
-		  $exists_error = "You have entered a value for the primary keys which exist in the database";
-		} else {
-		  // No rows are there.
-		  // echo '<br>nothing found';
-		  // echo $_POST['title'];
-			$sql_insert_into_items = "INSERT INTO `restaurant_info` (`title`, `rating`, `address_x`, `address_y`, `address_verbal`) VALUES ('".$title."', '".$_POST['rating']."', '".$address_x."', '". $address_y ."', '".$address_verbal."')";
-			$result_insert_into_items = mysqli_query($conn, $sql_insert_into_items);
-			if (!$result_insert_into_items){
+		  	$exists_coordinates_error = "You have entered a value for the address combination keys which exist in the database. Please re enter with different key combination";
+		}
+		else if(mysqli_num_rows($result_if_restaurant_exists))
+		{
+			// echo "This title exists in the table";
+			$sql_match_with_franchise_menu = "SELECT distinct menu_id FROM `restaurant_info`, `restaurant_menu` where restaurant_info.id = restaurant_menu.restaurant_id and restaurant_info.title = '".$title."'";
+			$result_match_with_franchise_menu =  $conn->query($sql_match_with_franchise_menu);
+
+
+     		if($result_match_with_franchise_menu->num_rows > 0)
+     		{
+				while($row = $result_match_with_franchise_menu->fetch_assoc())
+				{
+					$franchise_menu_id = $row['menu_id'];
+				}
+
+				$sql_insert_into_restaurant_info_for_franchise = "INSERT INTO `restaurant_info` (`title`, `rating`, `address_x`, `address_y`, `address_verbal`) VALUES ('".$title."', '".$_POST['rating']."', '".$address_x."', '". $address_y ."', '".$address_verbal."')";
+				$result_insert_into_restaurant_info_for_franchise = $conn->query($sql_insert_into_restaurant_info_for_franchise);
+
+				if (!$result_insert_into_restaurant_info_for_franchise){
+				    echo "Error details: " . mysqli_error($conn) . ".";
+				} else {
+					$sql_get_latest_restaurant_id = "SELECT MAX(id) FROM restaurant_info"; //RETRIEVING LATEST INSERTED ITEM ID FOR MENU_ITEMS TABLE
+					$result_get_latest_restaurant_id = $conn->query($sql_get_latest_restaurant_id);
+					if($result_get_latest_restaurant_id->num_rows > 0){
+						while($row = $result_get_latest_restaurant_id->fetch_assoc()){
+							$latest_restaurant_id = $row['MAX(id)'];
+						}
+					}
+				else
+				{
+					echo "no max id";
+				}
+				// echo "Successfully inserted values for restaurant_info";
+				$sql_insert_into_franchise_rest_menu = "INSERT INTO restaurant_menu (restaurant_id, menu_id) VALUES ('".$latest_restaurant_id."', '".$franchise_menu_id."')";
+				$result_insert_into_franchise_rest_menu = $conn->query($sql_insert_into_franchise_rest_menu);
+					if(!$result_insert_into_franchise_rest_menu){
+					    echo "Error details INSIDE franchise rest_menu: " . mysqli_error($conn) . ".";
+					}else{
+						header('Location: view_menu.php?id='.$latest_restaurant_id.'');
+
+					}
+				
+				}
+			}
+			else
+			{
+				echo "SQL QUERY didnt work";
+			}
+		}
+		else 
+		{
+		  	$sql_insert_into_restaurant_info_regular = "INSERT INTO `restaurant_info` (`title`, `rating`, `address_x`, `address_y`, `address_verbal`) VALUES ('".$title."', '".$_POST['rating']."', '".$address_x."', '". $address_y ."', '".$address_verbal."')";
+
+			$result_insert_into_restaurant_info_regular = mysqli_query($conn, $sql_insert_into_restaurant_info_regular);
+			if (!$result_insert_into_restaurant_info_regular){
 			    echo "Error details: " . mysqli_error($conn) . ".";
 			} else {
 				$sql_get_max_restaurant_id = "SELECT MAX(id) FROM restaurant_info"; //RETRIEVING LATEST INSERTED ITEM ID FOR MENU_ITEMS TABLE
@@ -101,8 +154,8 @@ if(isset($_POST['submit']))
 					</span>
 					<span class="label-input100"><strong>Restaurant</strong> -> Hours -> Menu</span>
 					<?php
-					if(isset($exists_error)){
-						echo $exists_error;
+					if(isset($exists_coordinates_error)){
+						echo $exists_coordinates_error;
 					}
 					?>
 					<br>

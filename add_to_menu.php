@@ -67,19 +67,6 @@ if($result_get_restaurant_id->num_rows > 0){
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 $name_err = ""; 
 $price_err = ""; 
 function sanitize_input($data)
@@ -235,13 +222,13 @@ if(isset($_POST['update']))
                         	<form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
 
                             <div class="form-group">
-                                <label for="username" class="text-info">name:</label><br>
+                                <label for="username" class="text-info">Item Name:</label><br>
                                 <input type="text"  name="name" value = "" class="form-control">
                                 <span class = "error"> &nbsp*<?php if (empty($update_food)) {echo "<p><em><font color=red>" . $name_err . "</font></em></p>";}?>
 		    					</span>
                             </div>
                             <div class="form-group">
-                                <label for="password" class="text-info">Price:</label><br>
+                                <label for="password" class="text-info">Price in $:</label><br>
                                 <input type="text"  name="price" value = ""  class="form-control">
                                 <span class = "error"> &nbsp*<?php if (empty($update_price)) {echo "<p><em><font color=red>" . $price_err . "</font></em></p>";}?>
 		    					</span>

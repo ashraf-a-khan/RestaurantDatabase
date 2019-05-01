@@ -8,7 +8,7 @@ $id = $_GET['id'];
 $getfood = $_GET['food'];
 
 
-echo $_SESSION['universal_menu_id'];
+// echo $_SESSION['universal_menu_id'];
 
 $food_err = "";
 $price_err = "";
@@ -161,7 +161,7 @@ if($result_openHours->num_rows > 0)
 		    					</span>
                             </div>
                             <div class="form-group">
-                                <label for="password" class="text-info">Price:</label><br>
+                                <label for="password" class="text-info">Price in $:</label><br>
                                 <input type="text"  name="price" value = "<?php echo $price; ?>"  class="form-control">
                                 <span class = "error"> &nbsp*<?php if (empty($update_price)) {echo "<p><em><font color=red>" . $price_err . "</font></em></p>";}?>
 		    					</span>
