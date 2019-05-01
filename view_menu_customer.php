@@ -101,9 +101,9 @@ $result_openHours = $conn->query($sql_openHours);
   while($row = $result_restaurant->fetch_assoc()) 
     {
       echo "<h1>". $row['title']. "</h1>";
-      echo "<h4>" . $row['address_x'] . "-" . $row['address_y'] . " ";
-      echo $row['address_verbal']. "</h4>";
-      echo "<h4>" ."Restaurant Rating: ".$row['rating']. "</h4>";
+      echo "<p>" . $row['address_x'] . "-" . $row['address_y'] . " ";
+      echo $row['address_verbal']. "</p>";
+      echo "<p>" ."Restaurant Rating: ".$row['rating']. "</p>";
     }
  }else{
 
@@ -113,15 +113,15 @@ if($result_openHours->num_rows > 0)
 {
   while($row = $result_openHours->fetch_assoc())
   {
-    echo "Days Open: " . $row['days_open'];
-    echo "<br>";
-    echo "Working Hours: " . $row['working_hours'];
-    echo "<br>";
-    echo "Specials: " . $row['specials'];
+    echo "<p>Days Open: " . $row['days_open']. "</p>";
+    // echo "<br>";
+    echo "<p>Working Hours: " . $row['working_hours']."</p>";
+    // echo "<br>";
+    echo "<p> Specials: " . $row['specials'] . "</p>";
   }
 }
 echo "<br>";
-echo "<br>";
+// echo "<br>";
 echo "<br>";
 
 

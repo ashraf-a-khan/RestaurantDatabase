@@ -93,7 +93,7 @@ function sanitize_input($data)
 //$sql_get_next_item_id = "SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'items' AND table_schema = 'restaurant_2'"
 
 
-echo $max_item_id;
+// echo $max_item_id;
 
 
 if(isset($_POST['update']))
@@ -159,10 +159,10 @@ if(isset($_POST['update']))
 				echo "no max id";
 			}
 
-			echo $max_item_id;
+			// echo $max_item_id;
 
-			echo "<br>";
-			echo $id;
+			// echo "<br>";
+			// echo $id;
 			$sql_insert_into_menu_items = "INSERT INTO menu_items (menu_id, item_id)  VALUES ('".$id."', '".$max_item_id."')";
 
 

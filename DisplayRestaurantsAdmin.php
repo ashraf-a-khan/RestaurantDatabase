@@ -159,6 +159,8 @@ if(isset($_POST['submit']))
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 input[type=text], select {

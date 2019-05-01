@@ -155,6 +155,9 @@ if(isset($_POST['submit']))
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  padding-left: 20px;
+  padding-right: 20px;
+
 }
 
 input[type=text], select {
@@ -254,7 +257,7 @@ div.column.side:hover{
 
 
 <p>Here is a list of restaurants for you to choose from.</p>
-<p><strong>Note:</strong> This interface allows you to select the menu of individual restaurants, edit them and delete them. Also, you can add restaurants here.</p>
+<p><strong>Note:</strong> You have logged in as a customer, you only have read privileges.</p>
 
 <div class="header">
   <h2>Restaurant List</h2>
