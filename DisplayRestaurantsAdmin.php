@@ -1,52 +1,64 @@
 <?php
 include 'db.php';
 session_start();
-$x2=$_POST['x'];
-$y2=$_POST['y'];
+// $x2=$_POST['x'];
+// $y2=$_POST['y'];
 
-function distanceFormula($x1, $x2, $y1, $y2) {
-    return sqrt(($y2 - $y1) * ($y2 - $y1) + ($x2 - $x1) * ($x2 - $x1));
-}
-
-function Combine($array1, $array2){ 
-    return(array_combine($array1, $array2)); 
-} 
-
-$sql = "SELECT * FROM restaurant_info";
-$result = $conn->query($sql);
-
-$xArray = array();
-$yArray = array();
-if ($result->num_rows > 0) 
-{   // output data of each row
-    while($row = $result->fetch_assoc()) 
-    {
-        array_push($xArray, $row["address_x"]);
-        array_push($yArray, $row["address_y"]);
-
-    }
-} else {
-    // echo "0 results";
-}
-
-$master = Combine($xArray, $yArray);
-
-$execXArray = array();
-$distArr = array();
-$distArr2 = array();
 if($_SERVER["REQUEST_METHOD"] == "POST") 
 {
+
+if(isset($_POST['submit']))
+{	
+	// echo $_POST['x'];
+	// echo $_POST['y'];
+
+	$x2=$_POST['x'];
+	$y2=$_POST['y'];
+		
+
+
+	function distanceFormula($x1, $x2, $y1, $y2) {
+	    return sqrt(($y2 - $y1) * ($y2 - $y1) + ($x2 - $x1) * ($x2 - $x1));
+	}
+
+	function Combine($array1, $array2){ 
+	    return(array_combine($array1, $array2)); 
+	} 
+
+	$sql = "SELECT * FROM restaurant_info";
+	$result = $conn->query($sql);
+
+	$xArray = array();
+	$yArray = array();
+	if ($result->num_rows > 0) 
+	{   // output data of each row
+	    while($row = $result->fetch_assoc()) 
+	    {
+	        array_push($xArray, $row["address_x"]);
+	        array_push($yArray, $row["address_y"]);
+
+	    }
+	} else {
+	    // echo "0 results";
+	}
+
+	$master = Combine($xArray, $yArray);
+
+	$execXArray = array();
+	$distArr = array();
+	$distArr2 = array();
+	// echo $_GET['x'];
+	// echo $_GET['y'];
     $myXAxis = mysqli_real_escape_string($conn,$_POST['x']);
     $myYAxis = mysqli_real_escape_string($conn,$_POST['y']); 
-    
 
     foreach ($master as $key=>$value){
     	array_push($distArr, distanceFormula($key, $myXAxis, $value, $myYAxis));	
     }
-	echo "<br>";
+	// echo "<br>";
 	$distArr2 = Combine($xArray, $distArr);
     //print_r($distArr2);
-	echo "<br>";
+	// echo "<br>";
     asort($distArr2); 
     foreach($distArr2 as $key=>$value){
     	//echo "X coordinate= ". $key .", Distance= " . $value;
@@ -92,12 +104,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 	}
 }
 
+}
 
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- <title>Login V13</title> -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -136,6 +152,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+}
+
+input[type=text], select {
+  width: 10%;
+  padding: 6px 10px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+div {
+  border-radius: 2px;
+  background-color: #f2f2f2;
+  padding: 2px;
 }
 
 /* Style the header */
@@ -201,6 +232,24 @@ div.column.side:hover{
 <body>
 
 <h2>Select Restaurants</h2>
+<form action = "<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" name='myform' method="post">
+	<p>What is your x and y axis:
+	<div class="form-group">
+		<label class="text-info">x axis:</label>
+		<input type = 'text' name = 'x'>
+	</div>
+	<div class="form-group">
+		<label class="text-info">y axis:</label>
+		<input type = 'text' name = 'y'>
+	</div>
+	</p>
+	<p><input type = 'submit' name = 'submit' onclick = 'check(); return false'></p>
+	</p>
+</form>
+
+
+
+
 <p>Here is a list of restaurants for you to choose from.</p>
 <p><strong>Note:</strong> This interface allows you to select the menu of individual restaurants, edit them and delete them. Also, you can add restaurants here.</p>
 
@@ -210,12 +259,17 @@ div.column.side:hover{
 
 
 <?php
-if(isset($_GET['title']))
-{
-  $sql_display_restaurants = "SELECT * FROM restaurant_info ORDER BY title";
-}else{
+
+
+if(isset($_POST['submit'])){
   $sql_display_restaurants = "SELECT * FROM restaurant_info WHERE id IN ($restaurant_id_arrFinal) ORDER BY FIELD (id, $restaurant_id_arrFinal)";
 }
+else if(isset($_GET['title']))
+{
+  $sql_display_restaurants = "SELECT * FROM restaurant_info ORDER BY title";
+}
+
+
 $sql_menu_id = "SELECT menu_id from restaurant_menu where restaurant_id in 
      (select id from restaurant_info WHERE id IN ($restaurant_id_arrFinal) ORDER BY FIELD (id, $restaurant_id_arrFinal))";
 

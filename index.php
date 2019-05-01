@@ -14,7 +14,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     if($count == 1) 
     {
-        header("location: EnterLocationAdmin.php");
+        header("location: DisplayRestaurantsAdmin.php?title=title");
     }
     else 
     {
@@ -79,7 +79,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                                 
                             </div>
                             <div class="form-group">
-                                <h4 class="text-center text-info"><a href="EnterLocationCustomer.php">Customer access here</a></h4>
+                                <h4 class="text-center text-info"><a href="DisplayRestaurantsCustomer.php?title=title">Customer access here</a></h4>
                                 <br>
                             </div>
 
