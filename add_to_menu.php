@@ -21,7 +21,7 @@ $restaurant_id = "";
 // 	mysqli_autocommit($conn, FALSE);
 
 //     // assume that the TABLE groups has an auto_increment id field
-//     $query = "INSERT INTO `items` (`category_id`, `name`, `price`) VALUES ('".$_POST['category_id']."', '".$_POST['name']."', '".$_POST['price']."')";
+//     $query = "INSERT INTO `items` (`category_name`, `name`, `price`) VALUES ('".$_POST['category_name']."', '".$_POST['name']."', '".$_POST['price']."')";
 
 //     $result = $conn->query($query);
 //     if ( !$result ) {
@@ -102,10 +102,10 @@ if(isset($_POST['update']))
 	$name = "";
 	$price = "";  	
 	if($_SERVER['REQUEST_METHOD'] == "POST")
-	{	$category_id = sanitize_input($_POST['category_id']);
+	{	$category_name = sanitize_input($_POST['category_name']);
 		$name = sanitize_input($_POST['name']);
 		$price = sanitize_input($_POST['price']);
-
+		$category_name = addslashes($_POST['category_name']);
 		if(empty($name))
 		{
 			$name_err = "The name field cannot be empty";
@@ -116,11 +116,11 @@ if(isset($_POST['update']))
 		}
 		else{
 			// $sql = "INSERT INTO items ( 
-			// category_id,
+			// category_name,
 			// name,
 			// price
 			// )	
-			// VALUES ('".$category_id."',
+			// VALUES ('".$category_name."',
 			// '".$name."',
 			// '".$price."') ";
 
@@ -134,7 +134,7 @@ if(isset($_POST['update']))
    //          }
 			mysqli_autocommit($conn, true);
 			$flag = true;
-			$sql_insert_into_items = "INSERT INTO `items` (`category_id`, `name`, `price`) VALUES ('".$_POST['category_id']."', '".$_POST['name']."', '".$_POST['price']."')";
+			$sql_insert_into_items = "INSERT INTO `items` (`category_name`, `name`, `price`) VALUES ('".$category_name."', '".$_POST['name']."', '".$_POST['price']."')";
 			$max_item_id="";
 
 
@@ -250,26 +250,26 @@ if(isset($_POST['update']))
                                 <label for="username" class="text-info">Category:</label><br>
                                 <!-- <input type="text" name="x" id="username" class="form-control"> -->
 		                    	<td>
-							    <select style="text-align: center" name="category_id">
-							    	<option value="1">All-day</option>
-							        <option value="2">Appetizers</option>
-							        <option value="3">Breakfast</option>
-							        <option value="4">Burgers</option>
-							        <option value="5" >Combos</option>
-							    	<option value="6">Cuisine</option>
-							        <option value="7">Desserts</option>
-							        <option value="8">Dinner</option>
-							        <option value="9">Drinks</option>
-							        <option value="10" >Entrees</option>
-							        <option value="11">Kid's specials</option>
-							        <option value="12">Lunch</option>
-							        <option value="13">Salads</option>
-							        <option value="14">Sauces</option>
-							        <option value="15" >Side Dishes</option>
-							        <option value="16">Smoothies</option>
-							        <option value="17">Soups</option>
-							        <option value="18">Vegan</option>
-							        <option value="19">Vegetarian</option>	        
+							    <select style="text-align: center" name="category_name">
+							    	<option value="All-day">All-day</option>
+							        <option value="Appetizers">Appetizers</option>
+							        <option value="Breakfast">Breakfast</option>
+							        <option value="Burgers">Burgers</option>
+							        <option value="Combos" >Combos</option>
+							    	<option value="Cuisine">Cuisine</option>
+							        <option value="Desserts">Desserts</option>
+							        <option value="Dinner">Dinner</option>
+							        <option value="Drinks">Drinks</option>
+							        <option value="Entrees" >Entrees</option>
+							        <option value="Kid's specials">Kid's specials</option>
+							        <option value="Lunch">Lunch</option>
+							        <option value="Salads">Salads</option>
+							        <option value="Sauces">Sauces</option>
+							        <option value="Side Dishes" >Side Dishes</option>
+							        <option value="Smoothies">Smoothies</option>
+							        <option value="Soups">Soups</option>
+							        <option value="Vegan">Vegan</option>
+							        <option value="Vegetarian">Vegetarian</option>	        
 							    </select>
 								</td>
                             </div>

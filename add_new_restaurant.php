@@ -22,7 +22,7 @@ if(isset($_POST['submit']))
 	echo mysqli_real_escape_string($title);
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
-		$sql_if_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."' OR address_x = '".$address_x."' OR address_y = '".$address_y."' ";	
+		$sql_if_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."' AND address_x = '".$address_x."' AND address_y = '".$address_y."' ";	
 		$result_if_exists = mysqli_query($conn, $sql_if_exists);
 		if (mysqli_num_rows($result_if_exists)) {
 		  // Rows are there.

@@ -69,7 +69,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                             
                             <div class="form-group">
                                 <label for="password" class="text-info">Password:</label><br>
-                                <input type="text" name="password" id="password" class="form-control">
+                                <input type="password" name="password" id="password" class="form-control">
                             </div>
                             <div id="register-link" class="text-center">
                             	<br>

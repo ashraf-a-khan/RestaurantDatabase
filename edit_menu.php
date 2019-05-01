@@ -3,7 +3,7 @@ include 'db.php';
 
 $food = "";
 $price = "";
-$category_id = "";
+$category_name = "";
 $id = $_GET['id'];
 $getfood = $_GET['food'];
 
@@ -16,7 +16,7 @@ $category_id_err = "";
 
 $update_food = "";
 $update_price = "";
-$update_category_id = "";
+$update_category_name = "";
 
 function sanitize_input($data)
 {
@@ -27,8 +27,8 @@ function sanitize_input($data)
 }
 
 // echo $getfood;
-// echo $_GET['category_id'];
-//http://localhost/DatabaseRestaurant/edit_menu.php?id=3&food=Caprice%20Garlic%20Bread&price=10.99&category_id=2
+// echo $_GET['category_name'];
+//http://localhost/DatabaseRestaurant/edit_menu.php?id=3&food=Caprice%20Garlic%20Bread&price=10.99&category_name=2
 
 $sql = "SELECT * FROM items WHERE id = '".$_GET['id']."'";
 
@@ -39,7 +39,7 @@ if($result_1->num_rows > 0)
     {
 	    $food = $row['name'];
 	    $price = $row['price'];
-	    $category_id = $row['category_id'];
+	    $category_name = addslashes($row['category_name']);
    } 
 }else{
 	echo "nOt gooDO";
@@ -49,15 +49,15 @@ if(isset($_POST['update']))
 	$update_id = sanitize_input($_POST['id']);
 	$update_food = sanitize_input($_POST['food']);
 	$update_price = sanitize_input($_POST['price']);
-	$update_category_id = sanitize_input($_POST['category_id']);
+	$update_category_name = addslashes($_POST['category_name']);
 	if(empty($update_food)){
 		$food_err = "Food item cannot be empty!";
 	}else if(empty($update_price)){
 		$price_err = "Price cannot be empty!";
-	}else if(empty($update_category_id)){
-		$category_id_err = "Category id cannot be empty!";
+	}else if(empty($update_category_name)){
+		$category_id_err = "Category name cannot be empty!";
 	}else{
-		$sql_update = "UPDATE items SET name = '".$_POST['food']."', price = '". $_POST['price'] ."', category_id = '".$_POST['category_id']."' WHERE id = '".$id."';";
+		$sql_update = "UPDATE items SET name = '".$_POST['food']."', price = '". $_POST['price'] ."', category_name = '".$_POST['category_name']."' WHERE id = '".$id."';";
 		if($conn->query($sql_update)){
 			header('Location: view_menu.php?id='.$_SESSION['universal_menu_id'].'');
 
@@ -170,7 +170,7 @@ if($result_openHours->num_rows > 0)
                                 <label for="username" class="text-info">Category:</label><br>
                                 <!-- <input type="text" name="x" id="username" class="form-control"> -->
 		                    	<td>
-							    <select style="text-align: center" name="category_id">
+							    <select style="text-align: center" name="category_name">
 							    	<option value="1">All-day</option>
 							        <option value="2">Appetizers</option>
 							        <option value="3">Breakfast</option>
