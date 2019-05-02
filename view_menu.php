@@ -12,13 +12,20 @@ $result_get_menu_id = $conn->query($sql_get_menu);
 $_SESSION['universal_menu_id'] = $_GET['id'];
 
 $menu_id = "";
+
+$menu_id_array = array();
 if($result_get_menu_id->num_rows > 0)
 {
   while($row = $result_get_menu_id->fetch_assoc()){
     $menu_id = $row['menu_id'];
+    array_push($menu_id_array, $row['menu_id']);
   }
 }
 
+
+// print_r($menu_id_array);
+$menu_arr = implode(",",$menu_id_array);
+// echo "fkffaa";
 // $category = array();
 // // echo $menu_id;
 // $sql_category = "SELECT category.id, category.name from category where id in 
@@ -34,11 +41,12 @@ if($result_get_menu_id->num_rows > 0)
 // }
 
 
-
+// echo $menu_arr;
 // print_r($category);
 
+$sql_menu_new = "SELECT * FROM items WHERE id IN (SELECT item_id FROM `menu_items` WHERE menu_id IN ($menu_arr))  order BY category_name";
 
-$sql_menu_new = "SELECT * FROM items WHERE id IN (SELECT item_id FROM `menu_items` WHERE menu_id = '".$menu_id."')  order BY category_name";
+// $sql_menu_new = "SELECT * FROM items WHERE id IN (SELECT item_id FROM `menu_items` WHERE menu_id = '".$menu_id."')  order BY category_name";
 $result_menu_new = $conn->query($sql_menu_new);
 
 // $sql_get_rowcount_menu = "SELECT COUNT(*) FROM `menu_items` WHERE menu_id = '".$menu_id."'
@@ -121,7 +129,8 @@ $result_openHours = $conn->query($sql_openHours);
  }else{
 
  } 
-
+echo "<button><a href = 'edit_open_hours.php?id=".$_GET['id']."'>Edit open hours for this restaurant</a></button>";
+echo "<br>";
 if($result_openHours->num_rows > 0)
 {
 	while($row = $result_openHours->fetch_assoc())
@@ -130,10 +139,11 @@ if($result_openHours->num_rows > 0)
 		echo "<p>Working Hours: " . $row['working_hours'] ."</p>";
 		echo "<p> Specials: " . $row['specials'] ."</p>";
 	}
-}
+}         
+
          echo "<br>";
          echo "<button><a href = 'add_to_menu.php?id=".$menu_id."'>Add items to this menu</a></button>";  //ADD it from that particular MENU and not RESTAURANT table... 
-    echo "<p>Categories available in this menu: ".implode(", ", $category)."</p>";
+    // echo "<p>Categories available in this menu: ".implode(", ", $category)."</p>";
     ?>
       
   <div class="table-responsive">          

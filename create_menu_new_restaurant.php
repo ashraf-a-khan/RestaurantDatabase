@@ -10,14 +10,16 @@ function sanitize_input($data)
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
+    $data = addslashes($data);
     return $data;
 }
 
-echo $restaurant_id;
+// echo $restaurant_id;
 
 if(isset($_POST['submit']))
 {	
 	$name = sanitize_input($_POST['name']);
+
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
 		$sql_if_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."' OR address_x = '".$address_x."' OR address_y = '".$address_y."' ";	

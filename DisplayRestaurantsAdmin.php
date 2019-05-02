@@ -46,7 +46,7 @@ if(isset($_POST['submit']))
 
 	    }
 	} else {
-	    // echo "0 results";
+	    echo "0 results";
 	}
 
 	$master = Combine($xArray, $yArray);

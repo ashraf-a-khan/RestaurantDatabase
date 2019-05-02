@@ -11,6 +11,7 @@ function sanitize_input($data)
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
+    $data = addslashes($data);
     return $data;
 }
 
@@ -23,7 +24,7 @@ if(isset($_POST['submit']))
 	// echo mysqli_real_escape_string($title);
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
-		$sql_if_exists_coordinates = "SELECT * FROM restaurant_info WHERE address_x = '".$address_x."' AND address_y = '".$address_y."' ";	
+		$sql_if_exists_coordinates = "SELECT * FROM restaurant_info WHERE address_x = '".$address_x."' OR address_y = '".$address_y."' ";	
 		$result_if_exists_coordinates = mysqli_query($conn, $sql_if_exists_coordinates);
 
 		$sql_if_restaurant_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."'";
@@ -70,10 +71,8 @@ if(isset($_POST['submit']))
 					if(!$result_insert_into_franchise_rest_menu){
 					    echo "Error details INSIDE franchise rest_menu: " . mysqli_error($conn) . ".";
 					}else{
-						header('Location: view_menu.php?id='.$latest_restaurant_id.'');
-
+						header('Location: add_open_hours_info.php?franchise_id='.$latest_restaurant_id.'');
 					}
-				
 				}
 			}
 			else
@@ -173,13 +172,13 @@ if(isset($_POST['submit']))
 
 					<div class="wrap-input100 validate-input" data-validate="X coordinate">
 						<span class="label-input100">X axis</span>
-						<input class="input100" type="text" name="address_x" placeholder="X axis" min="1" max="100">
+						<input class="input100" type="number" name="address_x" placeholder="X axis" min="1" max="100">
 						<span class="focus-input100"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate = "Y coordinate">
 						<span class="label-input100">Y axis</span>
-						<input class="input100" type="text" name="address_y" placeholder="Y axis" min="1" max="100">
+						<input class="input100" type="number" name="address_y" placeholder="Y axis" min="1" max="100">
 						<span class="focus-input100"></span>
 					</div>
 

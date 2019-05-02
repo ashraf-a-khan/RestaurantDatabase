@@ -13,48 +13,98 @@ function sanitize_input($data)
     return $data;
 }
 
-if(isset($_POST['submit']))
-{	
-	$days_open = sanitize_input($_POST['days_open']);
-	$working_hours = sanitize_input($_POST['working_hours']);
-	$specials = sanitize_input($_POST['specials']);
-	if($_SERVER['REQUEST_METHOD'] == "POST")
-	{
-		
-			mysqli_autocommit($conn, true);
-			$flag = true;
 
-			$sql_insert_into_open_hours = "INSERT INTO `open_hours_info` (`days_open`, `working_hours`, `specials`) VALUES ('".$days_open."', '".$working_hours."', '".$specials."')";
-			$result_insert_into_open_hours = mysqli_query($conn, $sql_insert_into_open_hours);
-			if (!$result_insert_into_open_hours){
-				$flag = false;
-			    echo "Error details: " . mysqli_error($conn) . ".";
-			} 
-			$sql_get_max_open_hours_id = "SELECT MAX(id) FROM open_hours_info";
-			$result_get_max_open_hours_id = $conn->query($sql_get_max_open_hours_id);
-			if($result_get_max_open_hours_id->num_rows > 0){
-				while($row = $result_get_max_open_hours_id->fetch_assoc()){
-					$max_open_hours_id = $row['MAX(id)'];
+if(isset($_GET['franchise_id']))
+{
+	if(isset($_POST['submit']))
+	{	
+		$days_open = sanitize_input($_POST['days_open']);
+		$working_hours = sanitize_input($_POST['working_hours']);
+		$specials = sanitize_input($_POST['specials']);
+		if($_SERVER['REQUEST_METHOD'] == "POST")
+		{
+			
+				mysqli_autocommit($conn, true);
+				$flag = true;
+
+				$sql_insert_into_open_hours = "INSERT INTO `open_hours_info` (`days_open`, `working_hours`, `specials`) VALUES ('".$days_open."', '".$working_hours."', '".$specials."')";
+				$result_insert_into_open_hours = mysqli_query($conn, $sql_insert_into_open_hours);
+				if (!$result_insert_into_open_hours){
+					$flag = false;
+				    echo "Error details: " . mysqli_error($conn) . ".";
+				} 
+				$sql_get_max_open_hours_id = "SELECT MAX(id) FROM open_hours_info";
+				$result_get_max_open_hours_id = $conn->query($sql_get_max_open_hours_id);
+				if($result_get_max_open_hours_id->num_rows > 0){
+					while($row = $result_get_max_open_hours_id->fetch_assoc()){
+						$max_open_hours_id = $row['MAX(id)'];
+					}
 				}
-			}
-			else
-			{
-				echo "no max id";
-			}
-			$sql_insert_hours_to_restaurant = "UPDATE restaurant_info SET open_hours_id = '".$max_open_hours_id."' WHERE id = '".$_GET['id']."'";
-			$result_insert_hours_to_restaurant = mysqli_query($conn, $sql_insert_hours_to_restaurant);
-			if (!$result_insert_hours_to_restaurant) {
-				$flag = false;
-			    echo "Error details: " . mysqli_error($conn) . ".";
-			}
-			if ($flag) {
-			    mysqli_commit($conn);
-				header('Location: create_menu_new_restaurant.php?rest_id='.$_GET['id'].'');
-			    // echo "All queries were executed successfully";
-			} else {
-				mysqli_rollback($conn);
-			    echo "All queries were rolled back";
-			} 
+				else
+				{
+					echo "no max id";
+				}
+				$sql_insert_hours_to_restaurant = "UPDATE restaurant_info SET open_hours_id = '".$max_open_hours_id."' WHERE id = '".$_GET['franchise_id']."'";
+				$result_insert_hours_to_restaurant = mysqli_query($conn, $sql_insert_hours_to_restaurant);
+				if (!$result_insert_hours_to_restaurant) {
+					$flag = false;
+				    echo "Error details: " . mysqli_error($conn) . ".";
+				}
+				if ($flag) {
+				    mysqli_commit($conn);
+					header('Location: view_menu.php?id='.$_GET['franchise_id'].'');
+				    // echo "All queries were executed successfully";
+				} else {
+					mysqli_rollback($conn);
+				    echo "All queries were rolled back";
+				} 
+		}
+	}	
+}
+else{
+	if(isset($_POST['submit']))
+	{	
+		$days_open = sanitize_input($_POST['days_open']);
+		$working_hours = sanitize_input($_POST['working_hours']);
+		$specials = sanitize_input($_POST['specials']);
+		if($_SERVER['REQUEST_METHOD'] == "POST")
+		{
+			
+				mysqli_autocommit($conn, true);
+				$flag = true;
+
+				$sql_insert_into_open_hours = "INSERT INTO `open_hours_info` (`days_open`, `working_hours`, `specials`) VALUES ('".$days_open."', '".$working_hours."', '".$specials."')";
+				$result_insert_into_open_hours = mysqli_query($conn, $sql_insert_into_open_hours);
+				if (!$result_insert_into_open_hours){
+					$flag = false;
+				    echo "Error details: " . mysqli_error($conn) . ".";
+				} 
+				$sql_get_max_open_hours_id = "SELECT MAX(id) FROM open_hours_info";
+				$result_get_max_open_hours_id = $conn->query($sql_get_max_open_hours_id);
+				if($result_get_max_open_hours_id->num_rows > 0){
+					while($row = $result_get_max_open_hours_id->fetch_assoc()){
+						$max_open_hours_id = $row['MAX(id)'];
+					}
+				}
+				else
+				{
+					echo "no max id";
+				}
+				$sql_insert_hours_to_restaurant = "UPDATE restaurant_info SET open_hours_id = '".$max_open_hours_id."' WHERE id = '".$_GET['id']."'";
+				$result_insert_hours_to_restaurant = mysqli_query($conn, $sql_insert_hours_to_restaurant);
+				if (!$result_insert_hours_to_restaurant) {
+					$flag = false;
+				    echo "Error details: " . mysqli_error($conn) . ".";
+				}
+				if ($flag) {
+				    mysqli_commit($conn);
+					header('Location: create_menu_new_restaurant.php?rest_id='.$_GET['id'].'');
+				    // echo "All queries were executed successfully";
+				} else {
+					mysqli_rollback($conn);
+				    echo "All queries were rolled back";
+				} 
+		}
 	}
 }
 
