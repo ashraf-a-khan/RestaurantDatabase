@@ -171,6 +171,7 @@ if($result_openHours->num_rows > 0)
                                 <!-- <input type="text" name="x" id="username" class="form-control"> -->
 		                    	<td>
 							    <select style="text-align: center" name="category_name">
+							    	<option value="" selected disabled hidden><?php echo $category_name ?></option>
 							    	<option value="All-day">All-day</option>
 							        <option value="Appetizers">Appetizers</option>
 							        <option value="Breakfast">Breakfast</option>

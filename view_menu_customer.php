@@ -133,6 +133,7 @@ echo "<br>";
   <table class="table">
     <thead>
       <tr>
+      	<th>Number</th>
         <th>Category</th>
         <th>Food Item</th>
         <th>Price</th>
@@ -145,21 +146,24 @@ echo "<br>";
 
 if ($result_menu_new->num_rows > 0) 
 {
+    $i=1;
    while($row = $result_menu_new->fetch_assoc()) 
     {
 ?>
 
       <tr>
+      	<td><p><?php echo $i?></p></td>
         <td><p><?php echo $row["category_name"] ?></p></td>
         <td><p><?php echo $row["name"] ?></p></td>
         <td><p><?php echo "$". $row["price"] ?></p></td>
         <?php
         // echo "<td><a href = 'edit_menu.php?id=".$row["id"]."'>Edit</a></td>"; 
         // echo "<td><a href = 'delete_menu_item.php?id=".$row["id"]."'>Delete</a></td>";
+      $i++;
       ?>
       </tr>
 <?php
-
+	
 
     }
 } else {

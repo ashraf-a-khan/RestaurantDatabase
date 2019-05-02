@@ -150,6 +150,7 @@ if($result_openHours->num_rows > 0)
   <table class="table">
     <thead>
       <tr>
+        <th>Number</th>
         <th>Category</th>
         <th>Food Item</th>
         <th>Price</th>
@@ -159,7 +160,7 @@ if($result_openHours->num_rows > 0)
     </thead>
     <tbody>
 <?php
-// $row_remaining="";
+// $row_remaining="";$
 // if($result_get_rowcount_menu > 0){
 //   $row_remaining = $result_get_rowcount_menu;
 // }
@@ -168,17 +169,20 @@ if($result_openHours->num_rows > 0)
 
 if ($result_menu_new->num_rows > 0) 
 {
+    $i=1;
    while($row = $result_menu_new->fetch_assoc()) 
     {
 ?>
 
       <tr>
+        <td><p><?php echo $i?></p></td>
         <td><p><?php echo $row["category_name"] ?></p></td>
         <td><p><?php echo $row["name"] ?></p></td>
         <td><p><?php echo "$". $row["price"] ?></p></td>
         <?php
         echo "<td><a href = 'edit_menu.php?id=".$row["id"]."'>Edit</a></td>"; 
         echo "<td><a href = 'delete_menu_item.php?id=".$row["id"]."'>Delete</a></td>";
+        $i++;
      }
 }     
 
