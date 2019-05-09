@@ -155,8 +155,8 @@ if(isset($_POST['submit']))
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  padding-left: 20px;
-  padding-right: 20px;
+  /*padding-left: 20px;
+  padding-right: 20px;*/
 
 }
 

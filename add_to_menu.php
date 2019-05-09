@@ -235,7 +235,7 @@ if(isset($_POST['update']))
 		    					</span>
                             </div>
                             <div style="text-align: center" class="form-group">
-                                <label for="username" class="text-info">Category:</label><br>
+                                <label for="username" class="text-info">Menu Type:</label><br>
                                 <!-- <input type="text" name="x" id="username" class="form-control"> -->
 		                    	<td>
 							    <select style="text-align: center" name="category_name">

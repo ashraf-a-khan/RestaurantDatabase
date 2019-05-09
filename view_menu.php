@@ -151,7 +151,7 @@ if($result_openHours->num_rows > 0)
     <thead>
       <tr>
         <th>Number</th>
-        <th>Category</th>
+        <th>Menu Type</th>
         <th>Food Item</th>
         <th>Price</th>
         <th>Edit Records</th>

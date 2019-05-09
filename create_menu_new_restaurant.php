@@ -1,7 +1,7 @@
 <?php
 include 'db.php';
 
-$name = ""; 
+$name = "NULL"; 
 //$exists_error = "";
 $max_menu_id="";
 $restaurant_id = $_GET['rest_id'];
@@ -16,18 +16,18 @@ function sanitize_input($data)
 
 // echo $restaurant_id;
 
-if(isset($_POST['submit']))
-{	
-	$name = sanitize_input($_POST['name']);
+// if(isset($_POST['submit']))
+// {	
+	// $name = sanitize_input($_POST['name']);
 
-	if($_SERVER['REQUEST_METHOD'] == "POST")
-	{
-		$sql_if_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."' OR address_x = '".$address_x."' OR address_y = '".$address_y."' ";	
-		$result_if_exists = mysqli_query($conn, $sql_if_exists);
-		if (mysqli_num_rows($result_if_exists)) {
-		  // Rows are there.
-		  $exists_error = "You have entered a value for the primary keys which exist in the database";
-		} else {
+	// if($_SERVER['REQUEST_METHOD'] == "POST")
+	// {
+		// $sql_if_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."' OR address_x = '".$address_x."' OR address_y = '".$address_y."' ";	
+		// $result_if_exists = mysqli_query($conn, $sql_if_exists);
+		// if (mysqli_num_rows($result_if_exists)) {
+		//   // Rows are there.
+		//   $exists_error = "You have entered a value for the primary keys which exist in the database";
+		// } else {
 
 			mysqli_autocommit($conn, true);
 			$flag = true;
@@ -68,9 +68,9 @@ if(isset($_POST['submit']))
 			} 
 
 
-		}	
-	}
-}
+		//}	
+	// }
+//}
 
 
 
@@ -128,7 +128,7 @@ if(isset($_POST['submit']))
 					<br>
 					<br>
 				<form class="login100-form validate-form" action = "<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-					<div class="wrap-input100" >
+					<!-- <div class="wrap-input100" >
 						<span class="label-input100">Enter menu name: </span>
 						<input class="input100" type="text" name="name" placeholder="Lunch">
 						<span class="focus-input100"></span>
@@ -140,7 +140,7 @@ if(isset($_POST['submit']))
 								Submit
 							</button>
 						</div>
-					</div>
+					</div> -->
 				</form>
 			</div>
 		</div>

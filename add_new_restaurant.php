@@ -24,7 +24,7 @@ if(isset($_POST['submit']))
 	// echo mysqli_real_escape_string($title);
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
-		$sql_if_exists_coordinates = "SELECT * FROM restaurant_info WHERE address_x = '".$address_x."' OR address_y = '".$address_y."' ";	
+		$sql_if_exists_coordinates = "SELECT * FROM restaurant_info WHERE address_x = '".$address_x."' AND address_y = '".$address_y."' ";	
 		$result_if_exists_coordinates = mysqli_query($conn, $sql_if_exists_coordinates);
 
 		$sql_if_restaurant_exists = "SELECT * FROM restaurant_info WHERE title = '".$title."'";

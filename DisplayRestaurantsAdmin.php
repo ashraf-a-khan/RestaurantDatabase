@@ -159,8 +159,8 @@ if(isset($_POST['submit']))
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  padding-left: 20px;
-  padding-right: 20px;
+  /*padding-left: 20px;
+  padding-right: 20px;*/
 }
 
 input[type=text], select {
@@ -242,7 +242,7 @@ div.column.side:hover{
 <button><a href = "index.php">Go to Admin/Customer selection</a></button>
 
 <h2>Select Restaurants</h2>
-<form action = "<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" name='myform' method="post">
+<!-- <form action = "<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" name='myform' method="post">
 	<?php
 	if(isset($exceedError)){
 		echo $exceedError;
@@ -262,7 +262,7 @@ div.column.side:hover{
 	</p>
 	<p><input type = 'submit' name = 'submit' onclick = 'check(); return false'></p>
 	</p>
-</form>
+</form> -->
 
 
 
